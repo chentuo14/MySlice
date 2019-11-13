@@ -440,7 +440,7 @@ void MainWindow::savestl()
     char* detal = new char[2];
     char* facecount = new char[4];
     int mfc = mdoutputlist.size();
-    itoa(mfc, facecount, 4);
+    snprintf(facecount,sizeof(facecount),"%d",mfc);
     int datalen = 80;
     strcpy(head, mkshead);
     pf->open(QIODevice::WriteOnly);

@@ -8,7 +8,7 @@
 #include <modelloader.h>
 #include <msupport.h>
 #include <QLabel>
-#include <QtGui/QHBoxLayout>
+#include <QHBoxLayout>
 #include <iconlabel.h>
 #include <msbar.h>
 #include <numberedit.h>
@@ -20,6 +20,9 @@
 #include <mbutton.h>
 #include <supportthread.h>
 #include <dlplog.h>
+
+#include <QCheckBox>
+#include <QPushButton>
 
 struct triangle;
 class MainWindow;

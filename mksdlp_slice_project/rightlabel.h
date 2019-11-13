@@ -3,8 +3,8 @@
 
 #include <QWidget>
 #include <QtGui>
-#include <QtGui/QLabel>
-#include <QtGui/QHBoxLayout>
+#include <QLabel>
+#include <QHBoxLayout>
 #include <QImage>
 #include <QPainter>
 
