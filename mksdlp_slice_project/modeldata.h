@@ -7,7 +7,7 @@
 #include <QVector2D>
 #include <msupport.h>
 #include <slice.h>
-#include <qtconcurrentrun.h>
+#include <QtConcurrent/QtConcurrentRun>
 #include <QDebug>
 #include <mdialog.h>
 struct triangle

@@ -2,7 +2,7 @@
 #define NUMBEREDIT_H
 
 #include <QWidget>
-#include <QtGui/QLabel>
+#include <QLabel>
 #include <QLineEdit>
 #include <QPainter>
 #include <QtGui>

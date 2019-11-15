@@ -8,7 +8,7 @@
 #include <modelloader.h>
 #include <msupport.h>
 #include <QLabel>
-#include <QtGui/QHBoxLayout>
+#include <QHBoxLayout>
 #include <iconlabel.h>
 #include <msbar.h>
 #include <numberedit.h>

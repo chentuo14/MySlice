@@ -8,6 +8,7 @@ QT       += core gui
 QT       += svg
 QT       += opengl
 QT       += network
+QT       += concurrent
 
 
 
@@ -74,14 +75,20 @@ FORMS    += mainwindow.ui
 unix:!macx: LIBS += -lGLU
 unix:!macx: LIBS += -lz
 
-QMAKE_CXXFLAGS += -std=c++11
+#QMAKE_CXXFLAGS += -std=c++11
 
 RESOURCES += \
     icon.qrc
 
-win32: LIBS += -L$$PWD/../quazip-master/quazip/release/ -lquazip
+#win32: LIBS += -L$$PWD/../quazip-master/quazip/release/ -lquazip
 
-INCLUDEPATH += $$PWD/../quazip-master/quazip
-DEPENDPATH += $$PWD/../quazip-master/quazip
+#INCLUDEPATH += $$PWD/../quazip-master/quazip
+#DEPENDPATH += $$PWD/../quazip-master/quazip
 
-win32-g++: PRE_TARGETDEPS += $$PWD/../quazip-master/quazip/release/libquazip.a
+#win32-g++: PRE_TARGETDEPS += $$PWD/../quazip-master/quazip/release/libquazip.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/quzip-result-x64/ -lquazip
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/quzip-result-x64/ -lquazipd
+
+INCLUDEPATH += $$PWD/../../../../../../MyDirectory/test2/quzip-result-x64
+DEPENDPATH += $$PWD/../../../../../../MyDirectory/test2/quzip-result-x64

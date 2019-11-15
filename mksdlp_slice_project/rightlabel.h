@@ -1,10 +1,10 @@
-#ifndef RIGHTLABEL_H
+﻿#ifndef RIGHTLABEL_H
 #define RIGHTLABEL_H
 
 #include <QWidget>
 #include <QtGui>
-#include <QtGui/QLabel>
-#include <QtGui/QHBoxLayout>
+#include <QLabel>
+#include <QHBoxLayout>
 #include <QImage>
 #include <QPainter>
 

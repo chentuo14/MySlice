@@ -6,12 +6,12 @@
 #include <QSlider>
 #include <QVector2D>
 #include <QVector>
-#include <qtconcurrentrun.h>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QProgressBar>
-#include <QtGui/QPushButton>
-#include <QtGui/QLabel>
+#include <QtConcurrent/QtConcurrentRun>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QLabel>
 #include <updatethread.h>
 
 #include <mcanvas.h>

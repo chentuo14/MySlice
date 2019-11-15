@@ -8,7 +8,8 @@
 #include <QFuture>
 #include <QImage>
 #include <QPainterPath>
-#include <qtconcurrentrun.h>
+//#include <qtconcurrentrun.h>
+#include <QtConcurrent/QtConcurrentRun>
 #include <math.h>
 #include <QMatrix>
 #include <QRgb>
