@@ -94,6 +94,7 @@ void MainWindow::UpdatePreViewDetail(float thickness, int exposetime, int offlig
     pvdialog->setDragText(thickness, exposetime, offlight, botexpose, botcount);
 }
 
+/* 装载模型函数 */
 void MainWindow::loadscene()
 {
     if(adding)
@@ -102,7 +103,7 @@ void MainWindow::loadscene()
     }
     QSettings settings("makerbase", "mksdlp");
     QString filename = QFileDialog::getOpenFileName(this,
-             tr("Open stl"), settings.value("loadpath").toString(), tr("stl|mdlp|zip|cws (*.stl;*.mdlp;*.zip;*.cws)"));
+             tr("Open stl"), settings.value("loadpath").toString(), tr("stl(*.stl)"));/*stl|mdlp|zip|cws (*.stl;*.mdlp;*.zip;*.cws)*/
     if(filename.isEmpty())
     {
         return;
@@ -111,6 +112,7 @@ void MainWindow::loadscene()
     settings.setValue("loadpath", info.path());
     if(info.suffix().toLower() == "stl")
     {
+        qDebug()<<"[chen]---------------load stl start----------------";
         adding = true;
         QString bd;
 //        loader = new ModelLoader(filename);
@@ -119,11 +121,13 @@ void MainWindow::loadscene()
         smd = new ModelData(filename);
         mThread->initLoadThread(smd);
         this->getData("mksdlp_thickness", bd, "0.1");
+        qDebug()<<"[chen] bd:"<<bd;
         thickness = bd.toFloat();
         mThread->start();
 //        newdata->PreGenerateLoop(thickness);
 //        md_list.push_back(newdata);
 //        connect(newdata, SIGNAL(updateProgress(int)), mview, SLOT(updateProgress(int)));
+        qDebug()<<"[chen]---------------load stl end----------------";
     }else if(info.suffix().toLower() == "mdlp")
     {
         bool isMKSFile = false;
@@ -232,8 +236,10 @@ void MainWindow::showToast(QString t, int tm)
     mview->showToast(t, tm);
 }
 
+/* 开始切片函数 */
 void MainWindow::savedlp()
 {
+    qDebug()<<"[chen]----------------------start savedlp------------------";
     if(md_list.size() < 1)
     {
         mview->showToast(toast_selectmodel, 2);
@@ -255,12 +261,12 @@ void MainWindow::savedlp()
 
 //    sliceresult = Slice(this);
     QString bd;
-    this->getData("mksdlp_pixelx", bd, "2560");
+    this->getData("mksdlp_pixelx", bd, "2560");             //分辨率
     int resolutionx = bd.toInt();
     this->getData("mksdlp_pixely", bd, "1440");
     int resolutiony = bd.toInt();
     sliceresult->setResolution(QVector2D(resolutionx, resolutiony));
-    this->getData("mksdlp_thickness", bd, "0.1");
+    this->getData("mksdlp_thickness", bd, "0.1");           //层厚
     thickness = bd.toFloat();
     sliceresult->thickness = thickness;
     this->getData("mksdlp_xsize", bd, "256");
@@ -343,6 +349,8 @@ void MainWindow::savedlp()
 //        this->showPreView();
         showSliceFinish();
     }
+
+    qDebug()<<"[chen]----------------------end savedlp------------------";
 }
 
 void MainWindow::CancelSlicing()

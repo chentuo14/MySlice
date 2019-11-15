@@ -106,6 +106,7 @@ void Slice::checkAllThread(bool &isfinish)
     }
 }
 
+/* 主要的切片过程 */
 void Slice::startslice(bool &slicecomplete, int &precent, bool fastmod)
 {
     if(layerlist.size() > 0)
@@ -124,6 +125,7 @@ void Slice::startslice(bool &slicecomplete, int &precent, bool fastmod)
             ld = layerlist.front();
             layerlist.pop();
             QImage floorimg = QImage(resolution.x(), resolution.y(), QImage::Format_RGB32);
+            qDebug()<<"[chen]  fastmod:"<<fastmod;
             if(!fastmod)
             {
                 slicethreads[i] = QtConcurrent::run(this, &Slice::generateByH, ld.id, ld.att, floorimg);
@@ -786,6 +788,7 @@ void Slice::generateByImage(unsigned int id, QImage &floorimg)
     }
 }
 
+/* startslice>>generateByPreSlice */
 void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
 {
     ModelData* md;

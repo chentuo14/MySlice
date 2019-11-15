@@ -20,6 +20,7 @@ void updateThread::initUpdateThread(ModelData *md)
 
 void updateThread::initLoadThread(ModelData *md)
 {
+    qDebug()<<"[chen] initLoadThread";
     threadtype = INIT_THREAD;
     this->md = md;
     connect(this->md, SIGNAL(updateProgress(int)), this, SLOT(ModelUpdate(int)));
@@ -54,6 +55,7 @@ void updateThread::run()
 //        emit updatemodel(md);
         break;
     case INIT_THREAD:
+        qDebug()<<"[chen] run";
         md->load();
         emit updateProgress(100);
         emit addmodel();

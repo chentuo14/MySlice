@@ -62,8 +62,10 @@ void ModelData::load()
         while(i<50)
         {
             parseStream >> asciiTest;
+//            qDebug()<<"[chen] load asciiTest"<<asciiTest;
             if(asciiTest.toLower().trimmed() == "facet")
             {
+                qDebug()<<"[chen] if(asciiTest.toLower().trimmed() == 'facet')";
                 parsefile.close();
                 filetype = "ASCII";
                 break;
@@ -73,15 +75,18 @@ void ModelData::load()
         parsefile.close();
         if(filetype != "ASCII")
         {
+            qDebug()<<"[chen] != ASCII";
             filetype = "BIN";
         }
     }
     if(filetype == "ASCII")
     {
+        qDebug()<<"[chen] == ASCII";
         dealASCII();
     }
     else if(filetype == "BIN")
     {
+        qDebug()<<"[chen] == BIN";
         dealBIN();
     }
     CenterModel();
@@ -183,6 +188,7 @@ void ModelData::dealASCII()
 
 void ModelData::dealBIN()
 {
+    qDebug()<<"[chen]----------------start dealBIN----------------";
     int facecount;
     QFile modelfile;
     modelfile.setFileName(this->filename);
@@ -240,6 +246,7 @@ void ModelData::dealBIN()
         modelfile.read(2);
     }
     modelfile.close();
+    qDebug()<<"[chen]----------------end dealBIN----------------";
 }
 
 void ModelData::CenterModel()
