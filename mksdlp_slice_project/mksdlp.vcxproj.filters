@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts;xlf</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts;xlf</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dlplog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iconlabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadingbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="m3dviewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mbutton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mcanvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modeldata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modelloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mprogressbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="msbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="msupport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mtitlebar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mtools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="nrightpanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="numberedit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="outputdata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="previewdlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rightlabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rightpanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="slice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="supportthread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="updatethread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="dlplog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="iconlabel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="loadingbar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="m3dviewer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mbutton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mcanvas.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="modeldata.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="modelloader.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mprogressbar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="msbar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="msupport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="mtitlebar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="mtools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="nrightpanel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="numberedit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="outputdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="previewdlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="rightlabel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="rightpanel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="slice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="supportthread.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="updatethread.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cn.ts">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="en.ts">
+      <Filter>Translation Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon\Bottom_view.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Drag_and_drop.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Expand.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Front_view.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Knife.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Language.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Rotate.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Save-as.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Separation_line_1.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Separation_line_2.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\Top_view.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\close.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="language\cn.qm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\copy.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\copy_press.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\del.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\del_press.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\direction.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\down.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\drop_down.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="language\en.qm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\folder.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\hide.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <QtRcc Include="icon.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <None Include="icon\magnifier.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\minimize.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\up.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icon\view.png">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
