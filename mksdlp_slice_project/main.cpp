@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 //    qDebug()<<fn;
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF8"));
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF8"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF8"));
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF8"));
+//    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF8"));
+//    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF8"));
     QString bd = "";
     QSettings settings("makerbase", "mksdlp");
     bd = settings.value("mksdlp_language").toString();

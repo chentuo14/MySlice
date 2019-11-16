@@ -436,7 +436,8 @@ void MainWindow::savestl()
     QFile *pf = new QFile(filename);
     isCancel = false;
     char* head = new char[80];
-    char* mkshead = "MakerBaseOutPut";
+    char temp[] =  "MakerBaseOutPut";
+    char* mkshead = temp;
     char* detal = new char[2];
     char* facecount = new char[4];
     int mfc = mdoutputlist.size();

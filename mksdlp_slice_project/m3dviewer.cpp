@@ -5,8 +5,8 @@
 #include <qmath.h>
 
 #include "m3dviewer.h"
-#include <GL/glu.h>
-#include<iostream>
+#include <iostream>
+#include <glut.h>
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D

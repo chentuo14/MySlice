@@ -1,4 +1,4 @@
-#include <rightpanel.h>
+﻿#include <rightpanel.h>
 #include <QFileInfo>
 #define MKS_INT 0;
 #define MKS_FLOAT 1;
@@ -48,7 +48,7 @@ void RightPanel::initUI()
     slicesetting = new QGroupBox();
     slicesetting->setTitle("切片参数设置");
     title = new QLabel();
-    title->setText("文件名");
+    title->setText(tr("文件名"));
     title->setStyleSheet("background-color:#d4d5d4;padding-top:5px;padding-bottom:5px;");
     filename = new QLabel();
     filename->setText("未选中模型");

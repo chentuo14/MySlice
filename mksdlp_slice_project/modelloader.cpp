@@ -63,6 +63,7 @@ void* ModelLoader::getTriList()
     {
         dealBIN();
     }
+    return nullptr;
 }
 void ModelLoader::dealASCII()
 {

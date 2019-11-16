@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QFile>
 #include <string>
+#include <unordered_map>
 
 Slice::Slice(MainWindow* mparent)
 {
@@ -827,7 +828,7 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
         double mindist = 100000.0;
         int waitid, nid;
         QVector2D pointp1, pointp2;
-        hash_map<int, std::string> hmlist;
+        std::unordered_map<int, std::string> hmlist;
         int j = 0;
         int nextid = 0;
         while(md->getNextTri(t, att, nextid))

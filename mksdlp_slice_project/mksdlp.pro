@@ -68,25 +68,28 @@ HEADERS  += mainwindow.h \
     updatethread.h \
     mbutton.h \
     supportthread.h \
-    dlplog.h
+    dlplog.h \
 
 FORMS    += mainwindow.ui
 
-unix:!macx: LIBS += -lGLU
-unix:!macx: LIBS += -lz
+#unix:!macx: LIBS += -lGLU
+#unix:!macx: LIBS += -lz
 
 #QMAKE_CXXFLAGS += -std=c++11
 
 RESOURCES += \
     icon.qrc
 
-#win32: LIBS += -L$$PWD/../quazip-master/quazip/release/ -lquazip
+LIBS += -lglut32
 
-#INCLUDEPATH += $$PWD/../quazip-master/quazip
-#DEPENDPATH += $$PWD/../quazip-master/quazip
+#zlib
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/zlib-result-x64/ -lzlibstat
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/zlib-result-x64/ -lzlibstatd
 
-#win32-g++: PRE_TARGETDEPS += $$PWD/../quazip-master/quazip/release/libquazip.a
+INCLUDEPATH += $$PWD/../../../../../../MyDirectory/test2/zlib-result-x64
+DEPENDPATH += $$PWD/../../../../../../MyDirectory/test2/zlib-result-x64
 
+#quzaip
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/quzip-result-x64/ -lquazip
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/quzip-result-x64/ -lquazipd
 

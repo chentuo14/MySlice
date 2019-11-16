@@ -18,7 +18,7 @@
 #include <mainwindow.h>
 #include <outputdata.h>
 #include <QDateTime>
-#include <ext/hash_map>
+//#include <ext/hash_map>
 #include <sstream>
 #include <iostream>
 #include <array>
@@ -30,7 +30,7 @@
 #include <JlCompress.h>
 #include <QXmlStreamReader>
 #include <QRegExp>
-using namespace __gnu_cxx;
+//using namespace __gnu_cxx;
 struct triangle;
 class ModelData;
 class MainWindow;

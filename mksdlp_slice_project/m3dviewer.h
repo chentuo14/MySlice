@@ -20,6 +20,11 @@
 #include <mbutton.h>
 #include <supportthread.h>
 #include <dlplog.h>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QLineEdit>
+
+//#include <qgl.h>
 
 struct triangle;
 class MainWindow;
