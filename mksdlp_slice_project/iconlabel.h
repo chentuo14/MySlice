@@ -1,4 +1,5 @@
-﻿#ifndef ICONLABEL_H
+﻿/* 自定义左侧的图标 */
+#ifndef ICONLABEL_H
 #define ICONLABEL_H
 
 #include <QtGui>

@@ -1,4 +1,5 @@
-﻿#ifndef MBUTTON_H
+﻿/* 自定义按钮 */
+#ifndef MBUTTON_H
 #define MBUTTON_H
 
 #include <QWidget>

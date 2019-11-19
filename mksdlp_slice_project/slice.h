@@ -1,4 +1,5 @@
-﻿#ifndef SLICE_H
+﻿/* 切片主文件 */
+#ifndef SLICE_H
 #define SLICE_H
 #include <vector>
 #include <list>
@@ -8,7 +9,6 @@
 #include <QFuture>
 #include <QImage>
 #include <QPainterPath>
-//#include <qtconcurrentrun.h>
 #include <QtConcurrent/QtConcurrentRun>
 #include <math.h>
 #include <QMatrix>
@@ -18,7 +18,6 @@
 #include <mainwindow.h>
 #include <outputdata.h>
 #include <QDateTime>
-//#include <ext/hash_map>
 #include <sstream>
 #include <iostream>
 #include <array>
@@ -30,7 +29,7 @@
 #include <JlCompress.h>
 #include <QXmlStreamReader>
 #include <QRegExp>
-//using namespace __gnu_cxx;
+
 struct triangle;
 class ModelData;
 class MainWindow;

@@ -1,4 +1,5 @@
-﻿#ifndef MODELLOADER_H
+﻿/* 加载切片文件 */
+#ifndef MODELLOADER_H
 #define MODELLOADER_H
 #include <QObject>
 #include <QFile>

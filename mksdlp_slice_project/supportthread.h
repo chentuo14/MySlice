@@ -1,4 +1,5 @@
-﻿#ifndef SUPPORTTHREAD_H
+﻿/* 支撑线程 */
+#ifndef SUPPORTTHREAD_H
 #define SUPPORTTHREAD_H
 #include <QThread>
 #include <QDebug>

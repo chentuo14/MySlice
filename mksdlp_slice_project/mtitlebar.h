@@ -1,4 +1,5 @@
-﻿#ifndef MTITLEBAR_H
+﻿/* 自定义标题栏 */
+#ifndef MTITLEBAR_H
 #define MTITLEBAR_H
 
 #include <QWidget>

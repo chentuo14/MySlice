@@ -1,4 +1,5 @@
-﻿#ifndef MPROGRESSBAR_H
+﻿/* 自定义进度条 */
+#ifndef MPROGRESSBAR_H
 #define MPROGRESSBAR_H
 
 #include <QWidget>

@@ -1,4 +1,5 @@
-﻿#ifndef UPDATETHREAD_H
+﻿/* 更新线程， */
+#ifndef UPDATETHREAD_H
 #define UPDATETHREAD_H
 
 #include <QObject>

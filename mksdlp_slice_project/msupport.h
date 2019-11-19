@@ -1,4 +1,5 @@
-﻿#ifndef MSUPPORT_H
+﻿/* 支撑类 */
+#ifndef MSUPPORT_H
 #define MSUPPORT_H
 #include <modelloader.h>
 #include <QVector3D>

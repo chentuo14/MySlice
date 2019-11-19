@@ -1,4 +1,5 @@
-﻿#ifndef OUTPUTDATA_H
+﻿/* 切片输出？ */
+#ifndef OUTPUTDATA_H
 #define OUTPUTDATA_H
 #include <slice.h>
 #include <math.h>

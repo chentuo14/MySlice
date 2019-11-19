@@ -1,4 +1,5 @@
-﻿#ifndef M3DVIEWER_H
+﻿/* GL的主控件 */
+#ifndef M3DVIEWER_H
 #define M3DVIEWER_H
 
 #include <QGLWidget>
@@ -23,8 +24,6 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QLineEdit>
-
-//#include <qgl.h>
 
 struct triangle;
 class MainWindow;

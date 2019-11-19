@@ -1,4 +1,5 @@
-﻿#ifndef RIGHTLABEL_H
+﻿/* 右侧+-的t条 */
+#ifndef RIGHTLABEL_H
 #define RIGHTLABEL_H
 
 #include <QWidget>

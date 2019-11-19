@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <slice.h>
+/* 可能是绘图的类 */
 #include <QtGui>
 #include <QVector2D>
 #include <QPoint>

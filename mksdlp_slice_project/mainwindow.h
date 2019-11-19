@@ -1,4 +1,5 @@
-﻿#ifndef MAINWINDOW_H
+﻿/* 主界面 */
+#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>

@@ -1,4 +1,5 @@
-﻿#ifndef RIGHTPANEL_H
+﻿/* 右侧窗口 */
+#ifndef RIGHTPANEL_H
 #define RIGHTPANEL_H
 
 #include <QWidget>

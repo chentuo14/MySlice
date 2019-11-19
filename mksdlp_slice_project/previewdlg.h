@@ -1,4 +1,5 @@
-﻿#ifndef PREVIEWDLG_H
+﻿/* 切片预览 */
+#ifndef PREVIEWDLG_H
 #define PREVIEWDLG_H
 
 #include <QDialog>

@@ -1,4 +1,5 @@
-﻿#ifndef MSBAR_H
+﻿/* 自定义分隔条 */
+#ifndef MSBAR_H
 #define MSBAR_H
 
 #include <QWidget>

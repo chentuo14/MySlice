@@ -1,4 +1,5 @@
-﻿#ifndef DLPLOG_H
+﻿/* 写日志文件 */
+#ifndef DLPLOG_H
 #define DLPLOG_H
 
 #include <QObject>

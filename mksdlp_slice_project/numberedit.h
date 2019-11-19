@@ -1,4 +1,5 @@
-﻿#ifndef NUMBEREDIT_H
+﻿/* 不知道这是啥，应该是个界面 */
+#ifndef NUMBEREDIT_H
 #define NUMBEREDIT_H
 
 #include <QWidget>

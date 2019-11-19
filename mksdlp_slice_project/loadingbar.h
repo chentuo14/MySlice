@@ -1,4 +1,5 @@
-﻿#ifndef LOADINGBAR_H
+﻿/* 自定义进度条 */
+#ifndef LOADINGBAR_H
 #define LOADINGBAR_H
 
 #include <QDialog>

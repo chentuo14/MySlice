@@ -1,4 +1,5 @@
-﻿#ifndef MODELDATA_H
+﻿/* 切片数据 */
+#ifndef MODELDATA_H
 #define MODELDATA_H
 #include <modelloader.h>
 #include <QObject>

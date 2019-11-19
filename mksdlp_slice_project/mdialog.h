@@ -1,4 +1,5 @@
-﻿#ifndef MDIALOG_H
+﻿/* 自定义对话框 */
+#ifndef MDIALOG_H
 #define MDIALOG_H
 
 #include <QDialog>

@@ -1,4 +1,5 @@
-﻿#ifndef NRIGHTPANEL_H
+﻿/* 支撑界面 */
+#ifndef NRIGHTPANEL_H
 #define NRIGHTPANEL_H
 
 #include <QWidget>
