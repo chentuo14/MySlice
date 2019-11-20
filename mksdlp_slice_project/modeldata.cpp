@@ -21,11 +21,17 @@ ModelData::ModelData(std::vector<triangle> trilist, QString filename) : QObject(
 
 ModelData::ModelData(QString filename) : QObject(0)
 {
+    //记录文件名
     this->filename = filename;
+    //初始化位置
     position = QVector3D(0, 0, 0);
+    //初始化旋转
     rotation = QVector3D(0, 0, 0);
+    //初始化缩放
     scale = QVector3D(1, 1, 1);
+    //初始化便宜
     offset = QVector3D(0, 0, 0);
+    //初始化层厚
     thickness = 0.1016;
 }
 
@@ -47,12 +53,12 @@ void ModelData::load()
     QString filetype = "";
     modellist.clear();
     QFileInfo info(filename);
-    QString suffix = info.suffix();
-    QFile parsefile(filename);
-    QTextStream parseStream(&parsefile);
+    QString suffix = info.suffix();             //文件后缀
+    QFile parsefile(filename);                  //文件
+    QTextStream parseStream(&parsefile);        //文件流
     QString asciiTest;
     unsigned int i = 0;
-    if(suffix.toLower() == "stl")
+    if(suffix.toLower() == "stl")           //判断ASCII还是BIN
     {
         if(!parsefile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
@@ -188,17 +194,18 @@ void ModelData::dealBIN()
     modelfile.setFileName(this->filename);
     modelfile.open(QIODevice::ReadOnly);
     modelfile.seek(80);
-    modelfile.read((char*) &facecount, 4);
+    modelfile.read((char*) &facecount, 4);              //读取三角面个数
     triangle tri;
     float x, y, z;
-    QVector3D vertex[3];
-    QVector3D normal;
+    QVector3D vertex[3];                                //顶点
+    QVector3D normal;                                   //法矢量？
     for(int i = 0; i < facecount; i++)
     {
         if(i%1000==0)
         {
             emit updateProgress(i*100/facecount);
         }
+        //读取法矢量3个点
         modelfile.read((char *) &x, 4);
         modelfile.read((char *) &y, 4);
         modelfile.read((char *) &z, 4);
@@ -206,6 +213,7 @@ void ModelData::dealBIN()
         normal.setY(y);
         normal.setZ(z);
 
+        //读取三角面第一个点
         modelfile.read((char *) &x, 4);
         modelfile.read((char *) &y, 4);
         modelfile.read((char *) &z, 4);
@@ -213,6 +221,7 @@ void ModelData::dealBIN()
         vertex[0].setY(y);
         vertex[0].setZ(z);
 
+        //三角面第二个点
         modelfile.read((char *) &x, 4);
         modelfile.read((char *) &y, 4);
         modelfile.read((char *) &z, 4);
@@ -220,13 +229,16 @@ void ModelData::dealBIN()
         vertex[1].setY(y);
         vertex[1].setZ(z);
 
+        //三角面第三个点
         modelfile.read((char *) &x, 4);
         modelfile.read((char *) &y, 4);
         modelfile.read((char *) &z, 4);
         vertex[2].setX(x);
         vertex[2].setY(y);
         vertex[2].setZ(z);
+        //vertex[1]-vertex[0]=P0P1;vertex[2]-vertex[0]=P2P0,相乘后是法向量（opengl右手坐标系）
         normal = QVector3D::crossProduct(vertex[1]-vertex[0], vertex[2]-vertex[0]);
+        //计算法向量长度
         float lens = sqrt(pow(normal.x(), 2)+pow(normal.y(), 2)+pow(normal.z(), 2));
         normal.setX(normal.x()/lens);
         normal.setY(normal.y()/lens);

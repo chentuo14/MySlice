@@ -534,7 +534,7 @@ void MainWindow::closedialog()
     }
     QString filename = QFileDialog::getSaveFileName(this, tr("Export Slices"),
                                                 defaultname,
-                                                tr("sprintray(*.ssj);;mdlp (*.mdlp)"));
+                                                tr("moonlite(*.mlt);;sprintray(*.ssj);;mdlp (*.mdlp)"));
     if(filename.isEmpty())
     {
         return;
@@ -547,6 +547,8 @@ void MainWindow::closedialog()
         sliceresult->setFilename(filename);
     else if(suffix == "ssj") {
         sliceresult->setSSJFilename(filename);
+    } else if(suffix == "mlt") {
+        sliceresult->setLiteFilename(filename);
     }
     finishdialog->close();
 }

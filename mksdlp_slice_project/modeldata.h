@@ -13,8 +13,8 @@
 #include <mdialog.h>
 struct triangle
 {
-    QVector3D normal;
-    QVector3D vertex[3];
+    QVector3D normal;               //这个是单位法向量
+    QVector3D vertex[3];            //三角面三个顶点
     QVector3D minp;
     QVector3D maxp;
     int id;

@@ -732,6 +732,29 @@ void Slice::setSSJFilename(QString filename)
     delete pfile;
 }
 
+void Slice::setLiteFilename(QString filename)
+{
+    qDebug()<<"setLiteFilename:filename:"<<filename;
+    QFile *pfile = new QFile(filename);
+    pfile->open(QIODevice::WriteOnly);
+    QDataStream out(pfile);
+    out<<QString("MoonLite").toLocal8Bit().data();
+    //2个字节x，2个字节y
+    out<<(quint16)resolution.x()<<(quint16)resolution.y();
+    int xy = 100;
+    int anti = 0;
+    qDebug()<<"xy:"<<xy<<"thickness:"<<thickness<<"anti:"<<anti;
+    //1个字节分辨率100，1个字节层厚，1个字节抗锯齿
+    out<<(quint8)xy<<(quint8)(thickness*1000.0)<<(quint8)anti;
+//    int layerNum = max_size;
+    //2个字节层数，2个字节基层曝光时间ms，1个字节基层数，2个字节片层曝光时间
+    out<<(quint16)max_size<<(quint16)mparent->pvdialog->be*1000
+      <<(quint8)mparent->pvdialog->bc<<(quint16)mparent->pvdialog->et*1000;
+
+    pfile->close();
+    delete pfile;
+}
+
 void Slice::generateByImage(unsigned int id, QImage &floorimg)
 {
     whitedata wd;
