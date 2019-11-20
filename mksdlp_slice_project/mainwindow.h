@@ -72,7 +72,7 @@ private:
     Ui::MainWindow *ui;
     M3DViewer* mview;
     ModelLoader* loader;
-    Slice *sliceresult;
+    Slice *sliceresult;         //存放了切片的参数
     ModelData *smd;
     RightPanel* rightPanel;
     NRightPanel* nrightPanel;

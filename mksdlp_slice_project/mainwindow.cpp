@@ -232,45 +232,44 @@ void MainWindow::showToast(QString t, int tm)
     mview->showToast(t, tm);
 }
 
+//切片动作
 void MainWindow::savedlp()
 {
+    //判断模型是否存在？
     if(md_list.size() < 1)
     {
         mview->showToast(toast_selectmodel, 2);
-//        mview->showToast(QApplication::translate("MainWindow", "At lease import one model"),2);
         return;
     }
+    //截屏吗？
     mview->getScreenShot();
 
+    //显示切片进度条
     MDialog *mpd = new MDialog(this);
     mpd->setDType("Progress");
     mpd->setProgress(0);
     mpd->show();
     connect(mpd, SIGNAL(OnCancel()), this, SLOT(CancelSlicing()));
-//    LoadingBar progressbar(0, 100);
-//    QObject::connect(&progressbar,SIGNAL(rejected()),this,SLOT(CancelSlicing()));
-//    progressbar.setDescription("准备切片");
-//    progressbar.setValue(0);
     QApplication::processEvents();
 
-//    sliceresult = Slice(this);
+    //获取切片参数
     QString bd;
     this->getData("mksdlp_pixelx", bd, "2560");
     int resolutionx = bd.toInt();
     this->getData("mksdlp_pixely", bd, "1440");
     int resolutiony = bd.toInt();
-    sliceresult->setResolution(QVector2D(resolutionx, resolutiony));
+    sliceresult->setResolution(QVector2D(resolutionx, resolutiony));            //写入Slice类分辨率
     this->getData("mksdlp_thickness", bd, "0.1");
     thickness = bd.toFloat();
-    sliceresult->thickness = thickness;
+    sliceresult->thickness = thickness;                                         //写入Slice层厚
     this->getData("mksdlp_xsize", bd, "256");
     float platformx = bd.toFloat();
     this->getData("mksdlp_ysize", bd, "144");
     float platformy = bd.toFloat();
     getData("mksdlp_slicetype", bd, "0");
     int slicetype = bd.toInt();
-    sliceresult->setSliceType(slicetype);
-    sliceresult->setPlatform(QVector2D(platformx, platformy));
+    sliceresult->setSliceType(slicetype);                                       //写入Slice切片类型
+    sliceresult->setPlatform(QVector2D(platformx, platformy));                  //写入Slice切片面积
     std::vector<triangle> trilist;
     double ff = thickness*0.5;
     int totallayer = 0;
@@ -278,11 +277,12 @@ void MainWindow::savedlp()
     ModelData* md;
     int max_size = 0;
     int max_result = 0;
-    for(int i = 0; i < md_list.size(); i++)
-    {
-        md = md_list[i];
-        zd = fabs(md->mmax.z() - md->mmin.z());
-        totallayer = ceil(zd/thickness);
+    qDebug()<<"md_list.size:"<<md_list.size();
+
+    for(int i = 0; i < md_list.size(); i++) {
+        md = md_list[i];                                    //一层的面
+        zd = fabs(md->mmax.z() - md->mmin.z());             //模型高度
+        totallayer = ceil(zd/thickness);                    //层数量
         max_size = max_size + totallayer;
         if(totallayer > max_result)
         {
@@ -294,8 +294,8 @@ void MainWindow::savedlp()
 //            sliceresult.addLayer(l, trilist, l*thickness + ff);
 //        }
     }
-    for(unsigned int l = 0; l < max_result; l++)
-    {
+
+    for(unsigned int l = 0; l < max_result; l++) {
         sliceresult->addH(l, l*thickness + ff);
     }
     sliceresult->setMaxSize(max_result);
@@ -382,6 +382,7 @@ void MainWindow::updateActionSave()
     }
 }
 
+//获取数据，datakey关键字，data获取的值，defaultvalue默认值
 void MainWindow::getData(QString datakey, QString &data, QString defaultvalue)
 {
     QSettings settings("makerbase", "mksdlp");
@@ -533,14 +534,20 @@ void MainWindow::closedialog()
     }
     QString filename = QFileDialog::getSaveFileName(this, tr("Export Slices"),
                                                 defaultname,
-                                                tr("mdlp (*.mdlp)"));
+                                                tr("sprintray(*.ssj);;mdlp (*.mdlp)"));
     if(filename.isEmpty())
     {
         return;
     }
     QFileInfo info(filename);
     settings.setValue("savepath", info.path());
-    sliceresult->setFilename(filename);
+
+    QString suffix = info.suffix();
+    if(suffix == "mdlp")
+        sliceresult->setFilename(filename);
+    else if(suffix == "ssj") {
+        sliceresult->setSSJFilename(filename);
+    }
     finishdialog->close();
 }
 

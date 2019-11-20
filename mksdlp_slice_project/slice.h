@@ -137,6 +137,7 @@ public:
     void setResolution(QVector2D rs);
     void setPlatform(QVector2D pf);
     void setFilename(QString filename);
+    void setSSJFilename(QString filename);
     void setZipFilename(QString filename, QString zipfilename);
     void setSliceType(int slicetype);
     void checkAllThread(bool &isfinish);

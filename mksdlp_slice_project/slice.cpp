@@ -109,6 +109,7 @@ void Slice::checkAllThread(bool &isfinish)
 
 void Slice::startslice(bool &slicecomplete, int &precent, bool fastmod)
 {
+    qDebug()<<"startslice:"<<layerlist.size()<<"sliceThread size:"<<slicethreads.size();
     if(layerlist.size() > 0)
     {
         for(int i = 0; i < slicethreads.size(); i++)
@@ -145,6 +146,7 @@ void Slice::startslice(bool &slicecomplete, int &precent, bool fastmod)
         if(isComplete)
         {
             std::sort(resultlayer.begin(), resultlayer.end(), layerresultcompare);
+            qDebug()<<"resultlayer:"<<resultlayer.size();
             mparent->UpdatePreViewDialog(resolution, resultlayer);
             slicecomplete = true;
         }
@@ -630,15 +632,18 @@ void Slice::setFilename(QString filename)
     QFile* pf = new QFile(filename);
     pf->open(QIODevice::WriteOnly);
     QDataStream out(pf);
-    out << "MKSDLP" ;
+    out << "MKSDLP" ;                                           //文件MKSDLP开头
+    qDebug()<<"[setFilename]:!isSaveZip:"<<!isSaveZip;
     if(!isSaveZip)
     {
+        qDebug()<<"[setFilename] before OutputScreenShot";
         mparent->OutputScreenShot(out);
     }else{
         int r, g, b, rgb, width, height;
         QImage hendimg = zippreview.scaled(116, 116, Qt::KeepAspectRatio);
         width = hendimg.width();
         height = hendimg.height();
+        qDebug()<<"[setFilename]width:"<<width<<"height:"<<height;
         for(int h = 0; h < height; h++)
         {
             for(int w = 0; w < width; w++)
@@ -668,22 +673,27 @@ void Slice::setFilename(QString filename)
         }
         out << (quint8)0x0D << (quint8)0x0A;
     }
+    qDebug()<<"[setFilename] after OutputScreenShot";
     out << (quint16)max_size << (quint16)resolution.x() << (quint16)resolution.y();
     out << QString::number(platform.x())
         << QString::number(platform.y())
         << QString::number(thickness);
-    QString bd;
+//    QString bd;
 //    mparent->getData("mksdlp_expose", bd, "8");
 //    et = bd.toInt();
+    qDebug()<<"exposetime:"<<mparent->pvdialog->et;
     out << (quint16)mparent->pvdialog->et;
 //    mparent->getData("mksdlp_lftime", bd, "3");
 //    ol = bd.toInt();
+    qDebug()<<"offlight:"<<mparent->pvdialog->ol;
     out << (quint16)mparent->pvdialog->ol;
 //    mparent->getData("mksdlp_bexpose", bd, "3");
 //    be = bd.toInt();
+    qDebug()<<"botexpose"<<mparent->pvdialog->be;
     out << (quint16)mparent->pvdialog->be;
 //    mparent->getData("mksdlp_blayer", bd, "3");
 //    bc = bd.toInt();
+    qDebug()<<"botcount"<<mparent->pvdialog->bc;
     out << (quint16)mparent->pvdialog->bc;
     std::vector<whitedata> eachlayer;
     whitedata eachline;
@@ -702,6 +712,24 @@ void Slice::setFilename(QString filename)
     pf->close();
     mparent->UpdatePreViewDetail(thickness, et, ol, be, bc);
     delete pf;
+}
+
+void Slice::setSSJFilename(QString filename)
+{
+    qDebug()<<"setSSJFilename:filename:"<<filename;
+    QFile *pfile = new QFile(filename);
+    pfile->open(QIODevice::WriteOnly);
+    QDataStream out(pfile);
+    out<<"SSJ";
+    qDebug()<<"max_size"<<max_size<<"resolutiuon"<<resolution;
+    out << (quint16)max_size << (quint16)resolution.x() << (quint16)resolution.y();
+    qDebug()<<"platorm"<<platform<<"thickness"<<thickness;
+    out << QString::number(platform.x())
+        << QString::number(platform.y())
+        << QString::number(thickness);
+//    out << "SSJ";
+    pfile->close();
+    delete pfile;
 }
 
 void Slice::generateByImage(unsigned int id, QImage &floorimg)
