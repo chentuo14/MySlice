@@ -263,6 +263,7 @@ void ModelData::CenterModel()
         {
             QVector3D p;
             p = modellist[i].vertex[j];
+            //边界判断，zyz轴的最大最小值
             if(p.x() > max_x)
             {
                 max_x = p.x();
@@ -289,16 +290,21 @@ void ModelData::CenterModel()
             }
         }
     }
+    //计算中心点
     offset.setX((max_x + min_x)*0.5);
     offset.setY((max_y + min_y)*0.5);
     offset.setZ((max_z + min_z)*0.5);
+    //最大值的一个三角面
     mmax.setX(max_x);
     mmax.setY(max_y);
     mmax.setZ(max_z);
+    //最小值的一个三角面
     mmin.setX(min_x);
     mmin.setY(min_y);
     mmin.setZ(min_z);
+    //最大面和最小面的中间面
     origonSize = mmax - mmin;
+    //把模型中心点移到原点
     for(int i = 0; i < modellist.size(); i++)
     {
         for(int j = 0; j < 3; j++)
@@ -310,18 +316,21 @@ void ModelData::CenterModel()
     updateOutput();
     moffset = offset;
 }
+
 void ModelData::updateOutput()
 {
+    qDebug()<<"updateOutput";
     float max_x = -9999999, max_y = -999999, min_x = 999999, min_y = 999999, max_z = -999999, min_z = 999999;
-    QVector3D nrot = rotation;
+    QVector3D nrot = rotation;                              //在初始化时为0
     nrot.setZ(nrot.z()+180);
     for(int i = 0; i < modellist.size(); i++)
     {
         if(i%10==0)
         {
-            emit updateProgress(i*50/modellist.size());
+            emit updateProgress(i*50/modellist.size());         //每10次更新进度
         }
         triangle tri = modellist[i];
+        //roatePorint不知道干嘛用的
         rotatPoint(tri.normal, nrot.y(), QVector3D(0,1,0));
         rotatPoint(tri.normal, nrot.x(), QVector3D(1,0,0));
         rotatPoint(tri.normal, nrot.z(), QVector3D(0,0,1));
@@ -355,7 +364,7 @@ void ModelData::updateOutput()
                 min_z = tri.vertex[v].z();
             }
         }
-        outputlist[i] = tri;
+        outputlist[i] = tri;                    //转换后保存到outputlist
     }
     mmax.setX(max_x);
     mmax.setY(max_y);
@@ -411,6 +420,7 @@ void ModelData::updateOutput()
     mmin.setY(min_y);
     mmin.setZ(min_z);
 //    FromModelList();
+    //也是最后加支撑
     for(int i = 0; i < supportlist.size(); i++)
     {
         supportlist[i].updatelist(scale, offset, nrot);

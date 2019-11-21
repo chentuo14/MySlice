@@ -65,29 +65,30 @@ void Slice::addLayer(unsigned int id, std::vector<triangle> tl, double att)
 }
 void Slice::addH(unsigned int id, double att)
 {
-    ld.id = id;
-    ld.att = att;
-    layerlist.push(ld);
+    ld.id = id;                                                 //层数
+    ld.att = att;                                               //层厚
+    layerlist.push(ld);                                         //放入layerlist队列
 }
 
 void Slice::setMaxSize(int max_size)
 {
+    //清空resultlayer
     while(resultlayer.size()>0)
     {
         resultlayer.erase(resultlayer.begin());
     }
-    this->max_size = max_size;
-    finishlayer.reserve(max_size);
-    resultlayer.reserve(max_size);
+    this->max_size = max_size;                                  //max_size最高层厚
+    finishlayer.reserve(max_size);                              //创建finishlayer个数空间
+    resultlayer.reserve(max_size);                              //创建resultelayer个数空间
     layerlooplist lll;
     layerresult lr;
     QImage img;
-    for(int i = 0; i < max_size; i++)
+    for(int i = 0; i < max_size; i++)                           //初始化了max_size个数的layerresult到resultlayer
     {
 //        finishlayer.push_back(lll);
         resultlayer.push_back(lr);
     }
-    mdlist = mparent->getModelInstance();
+    mdlist = mparent->getModelInstance();                       //mdlist=md_list;
 }
 void Slice::CancelSlicing()
 {

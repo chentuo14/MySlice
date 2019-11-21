@@ -78,7 +78,7 @@ public:
     void setPosition(QVector3D position);
     std::vector<unsigned int> normDispLists;
     std::vector<unsigned int> supportLists;
-    std::vector<MSupport> supportlist;
+    std::vector<MSupport> supportlist;                  //支持集合？
     std::vector<triangle> getZTri(float zdistance);
     void getStri(float xangle, std::vector<triangle> &trilist, float supportlen, QVector3D &maxp, QVector3D &minp, MDialog *mpd);
     bool PointinTri(triangle tri, QVector3D p);
@@ -106,7 +106,7 @@ public slots:
 signals:
     void updateProgress(int);
 private:
-    std::vector<triangle> modellist;
+    std::vector<triangle> modellist;                //STL三角面的信息
     std::vector<triangle> outputlist;
     std::vector<triangle> resultlist;
     std::vector< QFuture<void> > slicethreads;

@@ -235,7 +235,7 @@ void MainWindow::showToast(QString t, int tm)
 //切片动作
 void MainWindow::savedlp()
 {
-    //判断模型是否存在？
+    //判断模型个数
     if(md_list.size() < 1)
     {
         mview->showToast(toast_selectmodel, 2);
@@ -271,7 +271,7 @@ void MainWindow::savedlp()
     sliceresult->setSliceType(slicetype);                                       //写入Slice切片类型
     sliceresult->setPlatform(QVector2D(platformx, platformy));                  //写入Slice切片面积
     std::vector<triangle> trilist;
-    double ff = thickness*0.5;
+    double ff = thickness*0.5;                                                  //ff为层厚的一半
     int totallayer = 0;
     double zd;
     ModelData* md;
@@ -286,7 +286,7 @@ void MainWindow::savedlp()
         max_size = max_size + totallayer;
         if(totallayer > max_result)
         {
-            max_result = totallayer;
+            max_result = totallayer;                        //模型中最高的层数
         }
 //        for(unsigned int l = 0; l < totallayer; l++)
 //        {
@@ -296,10 +296,10 @@ void MainWindow::savedlp()
     }
 
     for(unsigned int l = 0; l < max_result; l++) {
-        sliceresult->addH(l, l*thickness + ff);
+        sliceresult->addH(l, l*thickness + ff);             //增加层信息
     }
     sliceresult->setMaxSize(max_result);
-    sliceresult->slicepos = 0;
+    sliceresult->slicepos = 0;                              //初始化切片位置
 
     getData("mksdlp_expose", bd, "8");
     int layertime = bd.toInt();

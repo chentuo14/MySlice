@@ -130,7 +130,7 @@ void MSupport::updateOutPutlist()
             rotatPoint(tri.vertex[v], nrotation.z(), QVector3D(0, 0, 1));
             tri.vertex[v].setZ(tri.vertex[v].z() + moffset.z());
         }
-        outputlist[i] = tri;
+        outputlist[i] = tri;                                //最后在outputlist中了
     }
 }
 
