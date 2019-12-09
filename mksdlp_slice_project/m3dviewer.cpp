@@ -488,6 +488,7 @@ void M3DViewer::outputScreenShot(QDataStream &out)
     QImage hendimg = screenshot.scaled(116, 116, Qt::KeepAspectRatio);
     width = hendimg.width();
     height = hendimg.height();
+//    qDebug()<<"hendimg.format()"<<hendimg.format();
     for(int h = 0; h < height; h++)
     {
         for(int w = 0; w < width; w++)
@@ -497,10 +498,13 @@ void M3DViewer::outputScreenShot(QDataStream &out)
             g = pcolor.green() >> 2;
             b = pcolor.blue() >> 3;
             rgb = (r << 11) | (g << 5) | b;
+            qDebug()<<r<<g<<b;
             out << (quint16) rgb;
         }
     }
     out << (quint8)0x0D << (quint8)0x0A;
+//    qDebug()<<"screenshot width:"<<screenshot.width();
+//    qDebug()<<"screenshot height:"<<screenshot.height();
     width = screenshot.width();
     height = screenshot.height();
     for(int h = 0; h < height; h++)

@@ -103,7 +103,7 @@ void MainWindow::loadscene()
     }
     QSettings settings("makerbase", "mksdlp");
     QString filename = QFileDialog::getOpenFileName(this,
-             tr("Open stl"), settings.value("loadpath").toString(), tr("stl(*.stl)"));/*stl|mdlp|zip|cws (*.stl;*.mdlp;*.zip;*.cws)*/
+             tr("Open stl"), settings.value("loadpath").toString(), tr("stl|mdlp|zip|cws (*.stl *.mdlp *.zip *.cws)"));
     if(filename.isEmpty())
     {
         return;
@@ -547,6 +547,8 @@ void MainWindow::closedialog()
     }
     QFileInfo info(filename);
     settings.setValue("savepath", info.path());
+    qDebug()<<"filename:"<<filename;
+    filename.append(".mdlp");
     sliceresult->setFilename(filename);
     finishdialog->close();
 }

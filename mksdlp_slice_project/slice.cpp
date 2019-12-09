@@ -125,7 +125,7 @@ void Slice::startslice(bool &slicecomplete, int &precent, bool fastmod)
             ld = layerlist.front();
             layerlist.pop();
             QImage floorimg = QImage(resolution.x(), resolution.y(), QImage::Format_RGB32);
-            qDebug()<<"[chen]  fastmod:"<<fastmod;
+//            qDebug()<<"[chen]  fastmod:"<<fastmod;
             if(!fastmod)
             {
                 slicethreads[i] = QtConcurrent::run(this, &Slice::generateByH, ld.id, ld.att, floorimg);
@@ -632,6 +632,7 @@ void Slice::setFilename(QString filename)
     pf->open(QIODevice::WriteOnly);
     QDataStream out(pf);
     out << "MKSDLP" ;
+//    qDebug()<<"isSaveZip:"<<isSaveZip;
     if(!isSaveZip)
     {
         mparent->OutputScreenShot(out);
@@ -669,6 +670,7 @@ void Slice::setFilename(QString filename)
         }
         out << (quint8)0x0D << (quint8)0x0A;
     }
+
     out << (quint16)max_size << (quint16)resolution.x() << (quint16)resolution.y();
     out << QString::number(platform.x())
         << QString::number(platform.y())
@@ -686,6 +688,7 @@ void Slice::setFilename(QString filename)
 //    mparent->getData("mksdlp_blayer", bd, "3");
 //    bc = bd.toInt();
     out << (quint16)mparent->pvdialog->bc;
+
     std::vector<whitedata> eachlayer;
     whitedata eachline;
     for(int i = 0; i < resultlayer.size(); i++)
@@ -699,6 +702,7 @@ void Slice::setFilename(QString filename)
         }
         out << (quint8)0x0D << (quint8)0x0A;
     }
+
     out << "MKSDLP";
     pf->close();
     mparent->UpdatePreViewDetail(thickness, et, ol, be, bc);

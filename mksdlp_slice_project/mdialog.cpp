@@ -223,6 +223,7 @@ void MDialog::MSliderChange(int value)
     for(int i = 0; i < lr.layerimgdata.size(); i++)
     {
         wd = lr.layerimgdata[i];
+//        qDebug()<<"wd:"<<wd.sp.x()<<wd.sp.y()<<wd.ep.x()<<wd.ep.y();
         qp.drawLine(wd.sp.x(), wd.sp.y(), wd.ep.x(), wd.ep.y());
     }
     qp.end();
