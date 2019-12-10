@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     updatethread.cpp \
     mbutton.cpp \
     supportthread.cpp \
-    dlplog.cpp
+    dlplog.cpp \
+    minilzo.c
 
 HEADERS  += mainwindow.h \
     m3dviewer.h \
@@ -69,6 +70,9 @@ HEADERS  += mainwindow.h \
     mbutton.h \
     supportthread.h \
     dlplog.h \
+    lzoconf.h \
+    lzodefs.h \
+    minilzo.h
 
 FORMS    += mainwindow.ui
 

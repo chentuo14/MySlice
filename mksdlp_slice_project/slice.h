@@ -29,6 +29,7 @@
 #include <JlCompress.h>
 #include <QXmlStreamReader>
 #include <QRegExp>
+#include <QtDebug>
 
 struct triangle;
 class ModelData;
@@ -137,18 +138,20 @@ public:
     void setResolution(QVector2D rs);
     void setPlatform(QVector2D pf);
     void setFilename(QString filename);
+    void getResultImgFromResultLayer();
     void setSSJFilename(QString filename);
     void setLiteFilename(QString filename);
     void setZipFilename(QString filename, QString zipfilename);
     void setSliceType(int slicetype);
     void checkAllThread(bool &isfinish);
     unsigned int slicepos;
+    int whiteCount = 0;
 private:
     std::vector< QFuture<void> > slicethreads;
     QFuture<void> checkthreads;
     std::queue<layerdata> layerlist;
     std::vector<layerlooplist> finishlayer;
-    std::vector<layerresult> resultlayer;
+    std::vector<layerresult> resultlayer;                       //切片完成的集合
     std::vector<QImage> resultimg;
 //    hash_map<double, std::vector<segment> > hmlist;
 //    std::map<unsigned int, std::vector<loop> > finishlayer;
@@ -180,5 +183,6 @@ private:
     void initSliceThread();
     void getSegmentAroundX(std::vector<segment> normallist, std::vector<sid> &outlist, double x);
     double distance2D(QVector2D point1, QVector2D point2);
+    int storeLiteImageFile(QDataStream &out);
 };
 #endif // SLICE_H

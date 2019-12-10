@@ -322,12 +322,12 @@ void MainWindow::savedlp()
     bool slfinish = false;
     do{
 //        sliceresult.checkslice(slfinish, precent);
-        sliceresult->startslice(slfinish, precent, true);
+        sliceresult->startslice(slfinish, precent, true);               //开始切片,最后保存在resultlayer
 //        progressbar.setValue(precent);
         mpd->setProgress(precent);
         QApplication::processEvents();
     }while(!slfinish && !isCancel);
-    if(isCancel)
+    if(isCancel)                                                        //判断是否取消
     {
         bool isfinish = false;
         mpd->setCancel();

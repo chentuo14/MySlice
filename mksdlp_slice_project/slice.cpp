@@ -6,6 +6,15 @@
 #include <string>
 #include <unordered_map>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "minilzo.h"
+
+#define HEAP_ALLOC(var,size) \
+    lzo_align_t __LZO_MMODEL var [ ((size) + (sizeof(lzo_align_t) - 1)) / sizeof(lzo_align_t) ]
+
+static HEAP_ALLOC(wrkmem, LZO1X_1_MEM_COMPRESS);
+
 Slice::Slice(MainWindow* mparent)
 {
     this->mparent = mparent;
@@ -26,7 +35,7 @@ void Slice::setResolution(QVector2D rs)
 void Slice::setPlatform(QVector2D pf)
 {
     this->platform = pf;
-    pixscale.setX(platform.x()/resolution.x());
+    pixscale.setX(platform.x()/resolution.x());                 //平台X除以分辨率x是打印XY分辨率
     pixscale.setY(platform.y()/resolution.y());
 }
 
@@ -110,7 +119,7 @@ void Slice::checkAllThread(bool &isfinish)
 
 void Slice::startslice(bool &slicecomplete, int &precent, bool fastmod)
 {
-    qDebug()<<"startslice:"<<layerlist.size()<<"sliceThread size:"<<slicethreads.size();
+//    qDebug()<<"startslice:"<<layerlist.size()<<"sliceThread size:"<<slicethreads.size();
     if(layerlist.size() > 0)
     {
         for(int i = 0; i < slicethreads.size(); i++)
@@ -123,9 +132,11 @@ void Slice::startslice(bool &slicecomplete, int &precent, bool fastmod)
             {
                 break;
             }
+            //提取第一层
             layerdata ld;
             ld = layerlist.front();
             layerlist.pop();
+            //需要保存的图片
             QImage floorimg = QImage(resolution.x(), resolution.y(), QImage::Format_RGB32);
             if(!fastmod)
             {
@@ -147,7 +158,7 @@ void Slice::startslice(bool &slicecomplete, int &precent, bool fastmod)
         if(isComplete)
         {
             std::sort(resultlayer.begin(), resultlayer.end(), layerresultcompare);
-            qDebug()<<"resultlayer:"<<resultlayer.size();
+//            qDebug()<<"resultlayer:"<<resultlayer.size();
             mparent->UpdatePreViewDialog(resolution, resultlayer);
             slicecomplete = true;
         }
@@ -682,19 +693,19 @@ void Slice::setFilename(QString filename)
 //    QString bd;
 //    mparent->getData("mksdlp_expose", bd, "8");
 //    et = bd.toInt();
-    qDebug()<<"exposetime:"<<mparent->pvdialog->et;
+//    qDebug()<<"exposetime:"<<mparent->pvdialog->et;
     out << (quint16)mparent->pvdialog->et;
 //    mparent->getData("mksdlp_lftime", bd, "3");
 //    ol = bd.toInt();
-    qDebug()<<"offlight:"<<mparent->pvdialog->ol;
+//    qDebug()<<"offlight:"<<mparent->pvdialog->ol;
     out << (quint16)mparent->pvdialog->ol;
 //    mparent->getData("mksdlp_bexpose", bd, "3");
 //    be = bd.toInt();
-    qDebug()<<"botexpose"<<mparent->pvdialog->be;
+//    qDebug()<<"botexpose"<<mparent->pvdialog->be;
     out << (quint16)mparent->pvdialog->be;
 //    mparent->getData("mksdlp_blayer", bd, "3");
 //    bc = bd.toInt();
-    qDebug()<<"botcount"<<mparent->pvdialog->bc;
+//    qDebug()<<"botcount"<<mparent->pvdialog->bc;
     out << (quint16)mparent->pvdialog->bc;
     std::vector<whitedata> eachlayer;
     whitedata eachline;
@@ -715,6 +726,42 @@ void Slice::setFilename(QString filename)
     delete pf;
 }
 
+void Slice::getResultImgFromResultLayer()
+{
+//    qDebug()<<"getResultImgFromResultLayer begin";
+    if(resultlayer.size() < 0)
+        return;
+
+    //清空resultmg
+//    qDebug()<<"getResultImgFromResultLayer clear resultimg";
+    while(resultimg.size() > 0)
+        resultimg.erase(resultimg.begin());
+    resultimg.reserve(resultlayer.size());
+
+    whiteCount = 0;
+
+//    qDebug()<<"getResultImgFromResultLayer clear start change";
+    for(int i=0;i<resultlayer.size();i++) {
+        QImage tempImg = QImage(resolution.x(), resolution.y(), QImage::Format_RGB32);
+        tempImg.fill(QColor(0, 0, 0));
+        QPainter qp;
+        whitedata wd;
+        layerresult lr = resultlayer[i];
+        qp.begin(&tempImg);
+        qp.setPen(QColor(255,255,255));
+//        qDebug()<<"getResultImgFromResultLayer clear start draw i:"<<i<<"iamgedata:"<<lr.layerimgdata.size();
+        for(int j=0;j<lr.layerimgdata.size();j++) {
+            wd = lr.layerimgdata[j];
+            whiteCount += (wd.sp.y() - wd.ep.y());
+            qp.drawLine(wd.sp.x(), wd.sp.y(), wd.ep.x(), wd.ep.y());
+        }
+        qp.end();
+//        qDebug()<<"getResultImgFromResultLayer start save image";
+        resultimg.push_back(tempImg);
+    }
+//    qDebug()<<"getResultImgFromResultLayer change end";
+}
+
 void Slice::setSSJFilename(QString filename)
 {
     qDebug()<<"setSSJFilename:filename:"<<filename;
@@ -731,26 +778,61 @@ void Slice::setSSJFilename(QString filename)
 //    out << "SSJ";
     pfile->close();
     delete pfile;
+    getResultImgFromResultLayer();
+    if(resultimg.size() < 0)
+        return;
+    for(int i=0;i<resultimg.size();i++)
+        resultimg[i].save(QString("c://Users//ch122//Pictures//%1.png").arg(i));
 }
 
 void Slice::setLiteFilename(QString filename)
 {
     qDebug()<<"setLiteFilename:filename:"<<filename;
+    int materialVolume = 100;
+    int materialSerial = 1;
+    int picturePosition = 1;
+    int pictureCode = 0;
+    int pictureSpeed = 0;
+    int imgPointNum = 0;       /* 一个像素一个字节 */
+    quint8 pixelNumH, pixelNumM, pixelNumL;
+
     QFile *pfile = new QFile(filename);
     pfile->open(QIODevice::WriteOnly);
     QDataStream out(pfile);
-    out<<QString("MoonLite").toLocal8Bit().data();
+//    out<<QString("MoonLite").toLocal8Bit().data();
+    for(int i=0;i<7654;i++)
+        out<<0x00;
+    for(int i=0;i<36574;i++)
+        out<<0x00;
     //2个字节x，2个字节y
     out<<(quint16)resolution.x()<<(quint16)resolution.y();
     int xy = 100;
-    int anti = 0;
+    int anti = 1;
     qDebug()<<"xy:"<<xy<<"thickness:"<<thickness<<"anti:"<<anti;
+
+    getResultImgFromResultLayer();
+    if(resultimg.size() < 0)
+        return;
+    imgPointNum = resultimg.size();
+    pixelNumL = imgPointNum & 0xff;
+    pixelNumM = (imgPointNum>>8)&0xff;
+    pixelNumH = (imgPointNum>>16)&0xff;
+    pictureSpeed = 255*this->whiteCount/resolution.x()/resolution.y()/resultimg.size();
+
     //1个字节分辨率100，1个字节层厚，1个字节抗锯齿
     out<<(quint8)xy<<(quint8)(thickness*1000.0)<<(quint8)anti;
 //    int layerNum = max_size;
     //2个字节层数，2个字节基层曝光时间ms，1个字节基层数，2个字节片层曝光时间
     out<<(quint16)max_size<<(quint16)mparent->pvdialog->be*1000
       <<(quint8)mparent->pvdialog->bc<<(quint16)mparent->pvdialog->et*1000;
+    //2个字节材料体积，1个字节材料编号（1白色2灰色...)2个字节图片位置(小端)
+    out<<(quint16)materialVolume<<(quint8)materialSerial<<(quint16)picturePosition;
+    //2个字节图片编码，1个字节图片速度面积等级，3个字节图片长度
+    qDebug()<<"imgPointNum:"<<imgPointNum;
+    out<<(quint16)pictureCode<<(quint8)pictureSpeed<<pixelNumH<<pixelNumM<<pixelNumL;
+
+    //写入图片
+    storeLiteImageFile(out);
 
     pfile->close();
     delete pfile;
@@ -841,6 +923,7 @@ void Slice::generateByImage(unsigned int id, QImage &floorimg)
 
 void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
 {
+//    qDebug()<<"[generateByPreSlice]<<id:"<<id<<"att:"<<att;
     ModelData* md;
     std::vector<triangle> tl;
     std::vector<QImage> imglist;
@@ -857,7 +940,7 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
         QVector3D thisP, thatP, mdoffset, mdposition, mdsize;
         float mdz = md->getOffset().z();
         mdoffset = md->getOffset();
-        mdposition = md->getPosition();
+        mdposition = md->getPosition();                 //模型移动的位置
         mdsize = md->getSize();
         int cmpcount = 0;
         for(int j = 0; j < suplist.size(); j++)
@@ -904,21 +987,26 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
                     {
                         continue;
                     }
+                    //thisP在平面上面，thatP在平面下面或平面上。说明会有焦点
                     xdisp = thatP.x() - thisP.x();
                     ydisp = thatP.y() - thisP.y();
                     zdisp = thatP.z() - thisP.z();
+                    /* 相似三角形算切片的线段，如果三角面在同一个面上会有三个点。至少有2个点 */
                     planefraction = (thisP.z() - att)/(fabs(zdisp));
                     points[cmpcount].setX(thisP.x() + xdisp*planefraction);
                     points[cmpcount].setY(thisP.y() + ydisp*planefraction);
                     cmpcount++;
                 }
             }
+            /* 转换为平台对应的坐标 */
             points[0].setX((points[0].x()+mdposition.x())/pixscale.x());
             points[0].setY((points[0].y()+mdposition.y())/pixscale.y());
             points[1].setX((points[1].x()+mdposition.x())/pixscale.x());
             points[1].setY((points[1].y()+mdposition.y())/pixscale.y());
+            /* 把P1P2图移动到中心 */
             sg.p1 = points[0] + resolution/2;
             sg.p2 = points[1] + resolution/2;
+            /* 坐标四舍五入取整 */
             if(sg.p2.x() > end_x)
             {
                 end_x = ceil(sg.p2.x())+1;
@@ -935,6 +1023,7 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
             {
                 star_y = floor(sg.p2.y())-1;
             }
+            /* 法向量 */
             sg.normal.setX(t.normal.x());
             sg.normal.setY(t.normal.y());
             sg.normal.normalize();
@@ -942,15 +1031,17 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
             sg.linepoint = false;
             sg.frontid = -1;
             sg.backid = -1;
-            sg.nowid = j;
+            sg.nowid = j;                       //记录当前点id
             CorrectPointOrder(sg);
-            segments.push_back(sg);
-            mpid = floor((sg.p1.x()*100+0.5));
+            segments.push_back(sg);             //存储起来（感觉像线段）两个点
+            mpid = floor((sg.p1.x()*100+0.5));          //存进hmlist
             std::ostringstream ss;
             ss << j;
             hmlist[mpid] += "|"+ss.str();
             j++;
         }
+        //到这里应该已经把所有线段都存进segments，并且hmlist记录了对应的数据
+        //支撑
         for(int supid=0;supid<suplist.size();supid++)
         {
             suplist[supid].setOP(mdoffset, mdposition);
@@ -1095,6 +1186,7 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
 //            hmlist[mpid] += "|"+ss.str();
 //        }
 
+        //到这里支撑也加进sements，对应数据也加进mhlist
         for(int sgi = 0; sgi < segments.size(); sgi++)
         {
             if(segments[sgi].frontid != -1 || segments[sgi].linepoint)
@@ -1164,7 +1256,7 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
         {
             floorimg = floorimg.mirrored(true, false);
         }
-        imglist.push_back(floorimg);
+        imglist.push_back(floorimg);                            //这里画图片
         while(tl.size()>0)
         {
             tl.erase(tl.begin());
@@ -1177,7 +1269,8 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
         {
             looplist.erase(looplist.begin());
         }
-    }
+    }   //循环结束
+
     if(star_x < 0)
     {
         star_x = 0;
@@ -1217,7 +1310,7 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
         star_x = end_x;
         star_y = end_y;
     }
-    std::vector<uchar*> datalist;
+    std::vector<uchar*> datalist;       //存为二进制文件
     for(int i =0;i<imglist.size();i++)
     {
         datalist.push_back(imglist[i].bits());
@@ -1280,7 +1373,7 @@ void Slice::generateByPreSlice(unsigned int id, double att, QImage &floorimg)
     layerresult lr;
     lr.layerid = id;
     lr.layerimgdata = resultlist;
-    resultlayer[id] = lr;
+    resultlayer[id] = lr;                   //这个是最后的结果
 //    std::vector<struct whitedata>().swap(resultlist);
     while(resultlist.size()>0)
     {
@@ -1647,6 +1740,43 @@ void Slice::getSegmentAroundX(std::vector<segment> normallist,std::vector<sid> &
 double Slice::distance2D(QVector2D point1, QVector2D point2)
 {
     return sqrt( pow((point2.x()-point1.x()),2) + pow((point2.y()-point1.y()),2));
+}
+
+int Slice::storeLiteImageFile(QDataStream &out)
+{
+    int pixelSize = resolution.x()*resolution.y();
+    uchar *tempImg = (uchar *)malloc(sizeof(uchar)*pixelSize);
+    uchar *lzoImg = (uchar *)malloc(sizeof(uchar)*pixelSize);
+    lzo_uint srcLen = pixelSize;
+    lzo_uint lzoLen = pixelSize;
+    int ret;
+
+    /* lzo初始化 */
+    if(lzo_init() != LZO_E_OK) {
+        qDebug()<<"[storeLiteImageFile] lzo_init() failed";
+        return -1;
+    }
+
+    for(auto iter = resultimg.cbegin();iter!=resultimg.cend();iter++) {
+        const uchar *binImg = iter->bits();
+        uchar gray = 0x00;
+        for(int i=0;i<pixelSize;i++) {
+            // (r * 11 + g * 16 + b * 5)/32
+            gray = (binImg[4*i]*11+binImg[4*i+1]*16+binImg[4*i+2]*5)/32;
+            tempImg[i] = gray;
+        }
+
+        lzo_memset(lzoImg,0,lzoLen);
+        ret = lzo1x_1_compress(binImg,srcLen, lzoImg, &lzoLen, wrkmem);
+        if(ret != LZO_E_OK) {
+            qDebug()<<"[storeLiteImageFile] lzo1x_1_compress() failed";
+            return -2;
+        }
+        for(int i=0;i<lzoLen;i++)
+            out<<*(lzoImg+i);
+    }
+
+    return 0;
 }
 
 void Slice::generateLoop(unsigned int id, std::vector<triangle> tl, double att)
