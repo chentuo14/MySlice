@@ -195,6 +195,7 @@ void ModelData::dealBIN()
     modelfile.open(QIODevice::ReadOnly);
     modelfile.seek(80);
     modelfile.read((char*) &facecount, 4);
+    qDebug()<<"filename:"<<this->filename<<"faceCount:"<<facecount;
     triangle tri;
     float x, y, z;
     QVector3D vertex[3];
@@ -246,6 +247,8 @@ void ModelData::dealBIN()
         modelfile.read(2);
     }
     modelfile.close();
+//    for(int i=0;i<modellist.size();i++)
+//        qDebug()<<modellist.at(i).normal;
     qDebug()<<"[chen]----------------end dealBIN----------------";
 }
 

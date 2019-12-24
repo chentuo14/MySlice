@@ -67,13 +67,15 @@ M3DViewer::M3DViewer(MainWindow *mparent,QWidget *parent) : QGLWidget(parent)
         supporttype = "point";
         break;
     }
+    //打开按钮
     openfile = new IconLabel();
     initIconLabel(openfile, ":/resource/icon/folder.png",tr("Open"),0);
     connect(openfile, SIGNAL(OnClicked()), this, SLOT(OnFileOpen()));
+    //保存按钮
     saveas = new IconLabel();
     initIconLabel(saveas, ":/resource/icon/Save-as.png", tr("Save"), 1);
     connect(saveas, SIGNAL(OnClicked()), this, SLOT(OnStlSave()));
-
+    //语言
     selectlanguage = new IconLabel();
     initIconLabel(selectlanguage, ":/resource/icon/Language.png", tr("Language"), 2);
     connect(selectlanguage, SIGNAL(OnClicked()), this, SLOT(togglepanel()));
@@ -105,6 +107,7 @@ M3DViewer::M3DViewer(MainWindow *mparent,QWidget *parent) : QGLWidget(parent)
     mmb->setGeometry(0, 60*3, 150, 4);
     mmb->setParent(this);
 
+    //视图选择
     selectview = new IconLabel();
     initIconLabel(selectview, ":/resource/icon/view.png", tr("View"), 3);
     connect(selectview, SIGNAL(OnClicked()), this, SLOT(togglepanel()));
@@ -138,6 +141,7 @@ M3DViewer::M3DViewer(MainWindow *mparent,QWidget *parent) : QGLWidget(parent)
     bottomview->setParent(viewpanel);
     connect(bottomview, SIGNAL(OnClicked()), this, SLOT(viewChange()));
 
+    //旋转按钮
     rotatemodel = new IconLabel();
     initIconLabel(rotatemodel, ":/resource/icon/Rotate.png", tr("Rotate"), 4);
     connect(rotatemodel, SIGNAL(OnClicked()), this, SLOT(togglepanel()));
@@ -177,6 +181,7 @@ M3DViewer::M3DViewer(MainWindow *mparent,QWidget *parent) : QGLWidget(parent)
     connect(rreset, SIGNAL(released()), this, SLOT(OnBtnRelease()));
     connect(rreset, SIGNAL(clicked(bool)), this, SLOT(OnResetData()));
 
+    //缩放按钮
     scaledmodel = new IconLabel();
     initIconLabel(scaledmodel, ":/resource/icon/magnifier.png", tr("Scale"), 5);
     connect(scaledmodel, SIGNAL(OnClicked()), this, SLOT(togglepanel()));

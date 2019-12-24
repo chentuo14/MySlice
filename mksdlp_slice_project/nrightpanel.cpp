@@ -1,4 +1,5 @@
 ﻿#include "nrightpanel.h"
+#include <QDebug>
 
 NRightPanel::NRightPanel(MainWindow *mparent, QWidget *parent) : QWidget(parent)
 {
@@ -34,6 +35,7 @@ void NRightPanel::OnModelSelected(int id)
 
 void NRightPanel::SyncSupportData()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QString data;
     getData("mksdlp_supportshape", data, "0");
     if(supportshape->count() < data.toInt()+1)
@@ -56,6 +58,7 @@ void NRightPanel::SyncSupportData()
 
 void NRightPanel::initUI()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     mainwidget = new QWidget();
     mainlayout = new QVBoxLayout();
     mainlayout->setMargin(0);
@@ -350,6 +353,7 @@ void NRightPanel::initUI()
 
 void NRightPanel::initData()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QString data;
     getData("mksdlp_pixelx", data, "2560");
     xresolutionedit->setObjectName("mksdlp_pixelx");
@@ -418,6 +422,7 @@ void NRightPanel::initData()
 
 void NRightPanel::getData(QString datakey, QString &data, QString defaultvalue)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QSettings settings("makerbase", "mksdlp");
     data = settings.value(datakey).toString();
     if(data == "")
@@ -429,6 +434,7 @@ void NRightPanel::getData(QString datakey, QString &data, QString defaultvalue)
 
 void NRightPanel::dealData(QString datakey, QString data)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QSettings settings("makerbase", "mksdlp");
     settings.setValue(datakey, data);
     if(keepxyresolution->isChecked() && !settexting)
@@ -451,6 +457,7 @@ void NRightPanel::dealData(QString datakey, QString data)
 
 void NRightPanel::SupportShapeChange(int st)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QString shape;
     switch(st){
     case 0:
@@ -469,6 +476,7 @@ void NRightPanel::SupportShapeChange(int st)
 
 void NRightPanel::SupportTypeChange(int st)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QString stype;
     switch (st) {
     case 0:
@@ -490,6 +498,7 @@ void NRightPanel::SupportTypeChange(int st)
 
 void NRightPanel::judgeText()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QLineEdit* mwidget = (QLineEdit*)sender();
     QString tt = mwidget->text();
     QString datakey = mwidget->objectName();
@@ -498,6 +507,7 @@ void NRightPanel::judgeText()
 
 void NRightPanel::OnMachineChange(bool isoff)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     if(!isanifinish)
     {
         machinelabel->setIsOff(!isoff);
@@ -558,6 +568,7 @@ void NRightPanel::OnMachineChange(bool isoff)
 
 void NRightPanel::OnSliceChange(bool isoff)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     if(!isanifinish)
     {
         slicelabel->setIsOff(!isoff);
@@ -604,6 +615,7 @@ void NRightPanel::OnSliceChange(bool isoff)
 
 void NRightPanel::OnSupportChange(bool isoff)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     if(!isanifinish)
     {
         supportlabel->setIsOff(!isoff);
@@ -634,6 +646,7 @@ void NRightPanel::OnSupportChange(bool isoff)
 
 void NRightPanel::getPP(QWidget *w, int &posx, int &posy, int &width, int &height)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     posx = w->pos().x();
     posy = w->pos().y();
     width = w->width();
@@ -642,17 +655,20 @@ void NRightPanel::getPP(QWidget *w, int &posx, int &posy, int &width, int &heigh
 
 void NRightPanel::anifinished()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     isanifinish = true;
 }
 
 void NRightPanel::OnModeChange()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QPushButton *mbtn = (QPushButton*)sender();
     QString mtype = mbtn->objectName();
 }
 
 void NRightPanel::OnBtnPress()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QPushButton *mbtn = (QPushButton*)sender();
     QString tm = mbtn->objectName();
 //    QString sheet = "background-color:#126e59;color:#14d39f;border-radius:10px;border:0px;margin-top:20px;"
@@ -673,6 +689,7 @@ void NRightPanel::OnBtnPress()
 
 void NRightPanel::OnBtnRelease()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QPushButton *mbtn = (QPushButton*)sender();
     QString tm = mbtn->objectName();
     QString sheet = mbtn->styleSheet();
@@ -693,6 +710,7 @@ void NRightPanel::OnBtnRelease()
 
 void NRightPanel::OnBtnClick()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     if(selectid == -1)
     {
         mparent->showToast(str_toast, 2);
@@ -716,11 +734,13 @@ void NRightPanel::OnBtnClick()
 
 void NRightPanel::SliceTypeChange(int st)
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     dealData("mksdlp_slicetype", QString::number(st));
 }
 
 void NRightPanel::rateSelect()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QPushButton *mbtn = (QPushButton*)sender();
     QString objn = mbtn->objectName();
     mparent->setData("mksdlp_supportrate", objn);
@@ -729,6 +749,7 @@ void NRightPanel::rateSelect()
 
 void NRightPanel::sizeSelect()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QPushButton *mbtn = (QPushButton*)sender();
     QString objn = mbtn->objectName();
     if(objn == "S")
@@ -752,6 +773,7 @@ void NRightPanel::sizeSelect()
 
 void NRightPanel::UpdateData()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     QString data;
     mparent->getData("mksdlp_supportrate", data, "30");
     supportrateL->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:2px;border:0px;margin-top:10px;"
@@ -806,6 +828,7 @@ void NRightPanel::UpdateData()
 
 void NRightPanel::UpdateLanguage()
 {
+    qDebug()<<" [function]"<<__FUNCTION__;
     str_addsup = tr("Add Support");
     str_delsup = tr("Del Support");
     str_autosup = tr("Auto Support");
