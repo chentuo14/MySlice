@@ -62,6 +62,29 @@ MainWindow::MainWindow(QWidget *parent) :
     finishdialog->setMinimumSize(240, 128);
     connect(mThread, SIGNAL(addmodel()), this, SLOT(addmodels()));
     connect(mThread, SIGNAL(updateProgress(int)), mview, SLOT(updateProgress(int)));
+
+    MachineSettingBtn = new QToolButton(this);
+    MachineSettingBtn->setIcon(QIcon(":/resource/icon/MachineSetting.png"));
+    MachineSettingBtn->setFixedSize(20, 20);
+    ui->mainToolBar->addWidget(MachineSettingBtn);
+    connect(MachineSettingBtn, &QToolButton::clicked, this, &MainWindow::MachineSettingMenu);
+
+    SliceSettingBtn = new QToolButton(this);
+    SliceSettingBtn->setFixedSize(20, 20);
+    SliceSettingBtn->setIcon(QIcon(":/resource/icon/SliceSetting.png"));
+    ui->mainToolBar->addWidget(SliceSettingBtn);
+    connect(SliceSettingBtn, &QToolButton::clicked, this, &MainWindow::SliceSettingMenu);
+
+    SupportSettingBtn = new QToolButton(this);
+    SupportSettingBtn->setFixedSize(20, 20);
+    SupportSettingBtn->setIcon(QIcon(":/resource/icon/SupportSetting.png"));
+    ui->mainToolBar->addSeparator();
+    ui->mainToolBar->addWidget(SupportSettingBtn);
+    connect(SupportSettingBtn, &QToolButton::clicked, this, &MainWindow::SupportSettingMenu);
+
+    ui->mainToolBar->setMovable(false);
+    ui->mainToolBar->show();
+
 }
 
 MainWindow::~MainWindow()
@@ -229,6 +252,29 @@ void MainWindow::showPreView()
 std::vector<ModelData*> MainWindow::getModelInstance()
 {
     return md_list;
+}
+
+void MainWindow::MachineSettingMenu()
+{
+    DlgMachineSetting dlg(this);
+    int ret = dlg.exec();
+    qDebug()<<__FUNCTION__<<ret;
+}
+
+void MainWindow::SliceSettingMenu()
+{
+    DlgSliceSetting dlg(this);
+    int ret = dlg.exec();
+    qDebug()<<__FUNCTION__<<ret;
+
+}
+
+void MainWindow::SupportSettingMenu()
+{
+//    qDebug()<<__FUNCTION__;
+    DlgSupportSetting dlg(this);
+    int ret = dlg.exec();
+    qDebug()<<__FUNCTION__<<ret;
 }
 
 void MainWindow::showToast(QString t, int tm)

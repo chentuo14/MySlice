@@ -75,6 +75,8 @@ void NRightPanel::initUI()
     b1 = new MsBar();
     b1->setMinimumHeight(5);
     machinelabel = new RightLabel();
+
+    /* Machine Setting部分 */
     machinelabel->setText(tr("Machine Setting"));
     machinelabel->setMargin(0);
     machineglayout = new QGridLayout();
@@ -134,6 +136,7 @@ void NRightPanel::initUI()
     machinewidget->setLayout(machineglayout);
     connect(machinelabel, SIGNAL(OnClicked(bool)), this, SLOT(OnMachineChange(bool)));
 
+    /* SliceSetting部分 */
     b2 = new MsBar();
     b2->setMinimumHeight(5);
     slicelabel = new RightLabel();
@@ -202,6 +205,7 @@ void NRightPanel::initUI()
     slicewidget->setLayout(sliceglayout);
     connect(slicelabel, SIGNAL(OnClicked(bool)), this, SLOT(OnSliceChange(bool)));
 
+    /* support settings */
     b3 = new MsBar();
     b3->setMinimumHeight(5);
     supportlabel = new RightLabel();
@@ -354,6 +358,7 @@ void NRightPanel::initUI()
 void NRightPanel::initData()
 {
     qDebug()<<" [function]"<<__FUNCTION__;
+    /* Machine Setting */
     QString data;
     getData("mksdlp_pixelx", data, "2560");
     xresolutionedit->setObjectName("mksdlp_pixelx");
@@ -385,6 +390,7 @@ void NRightPanel::initData()
     zlenedit->setValidator(this->floatvalidator);
     connect(zlenedit, SIGNAL(textChanged(const QString&)), this, SLOT(judgeText()));
 
+    /* Slice Setting */
     getData("mksdlp_thickness", data, "0.1");
     thicknessedit->setObjectName("mksdlp_thickness");
     thicknessedit->setText(data);

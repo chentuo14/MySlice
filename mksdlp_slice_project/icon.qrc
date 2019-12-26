@@ -27,5 +27,8 @@
         <file>icon/copy_press.png</file>
         <file>icon/del.png</file>
         <file>icon/del_press.png</file>
+        <file>icon/MachineSetting.png</file>
+        <file>icon/SliceSetting.png</file>
+        <file>icon/SupportSetting.png</file>
     </qresource>
 </RCC>

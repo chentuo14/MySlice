@@ -42,7 +42,10 @@ SOURCES += main.cpp\
     updatethread.cpp \
     mbutton.cpp \
     supportthread.cpp \
-    dlplog.cpp
+    dlplog.cpp \
+    MySettingDlg/dlgmachinesetting.cpp \
+    MySettingDlg/dlgslicesetting.cpp \
+    MySettingDlg/dlgsupportsetting.cpp
 
 HEADERS  += mainwindow.h \
     m3dviewer.h \
@@ -67,9 +70,15 @@ HEADERS  += mainwindow.h \
     updatethread.h \
     mbutton.h \
     supportthread.h \
-    dlplog.h
+    dlplog.h \
+    MySettingDlg/dlgmachinesetting.h \
+    MySettingDlg/dlgslicesetting.h \
+    MySettingDlg/dlgsupportsetting.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    MySettingDlg/dlgmachinesetting.ui \
+    MySettingDlg/dlgslicesetting.ui \
+    MySettingDlg/dlgsupportsetting.ui
 
 unix:!macx: LIBS += -lGLU
 unix:!macx: LIBS += -lz

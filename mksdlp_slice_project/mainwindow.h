@@ -14,6 +14,11 @@
 #include <QTranslator>
 #include <QApplication>
 #include <updatethread.h>
+#include <QToolButton>
+
+#include "MySettingDlg/dlgmachinesetting.h"
+#include "MySettingDlg/dlgslicesetting.h"
+#include "MySettingDlg/dlgsupportsetting.h"
 
 struct layerresult;
 class PreViewDialog;
@@ -65,6 +70,10 @@ public slots:
 //    void modelDataChange(int id);
     std::vector<ModelData*> getModelInstance();
 
+    /*  */
+    void MachineSettingMenu();
+    void SliceSettingMenu();
+    void SupportSettingMenu();
 signals:
 
 private:
@@ -82,6 +91,7 @@ private:
     updateThread *mThread;
     int hour, minute;
     bool isCancel, adding;
+    QToolButton *MachineSettingBtn, *SliceSettingBtn, *SupportSettingBtn;
     void updateActionSave();
     void SyncData();
 protected:
