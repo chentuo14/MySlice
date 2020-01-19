@@ -11,7 +11,9 @@ class mButton : public QWidget
     Q_OBJECT
 public:
     explicit mButton(QWidget *parent = 0, QString imgpath = "", QString imgpresspath = "");
-
+    void setId(int id);
+    int getId();
+    void setSelectedStatus(bool status);
 signals:
     void buttonClick();
 
@@ -25,6 +27,8 @@ private:
     QPainter *mp;
     QImage img, imgpress;
     bool ispress;
+    bool isSelected;
+    int m_id;
 };
 
 #endif // MBUTTON_H

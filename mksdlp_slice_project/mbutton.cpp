@@ -3,6 +3,7 @@
 mButton::mButton(QWidget *parent, QString imgpath, QString imgpresspath) : QWidget(parent)
 {
     ispress = false;
+    isSelected = false;
     img = QImage(imgpath);
     imgpress = QImage(imgpresspath);
     setMouseTracking(true);
@@ -10,6 +11,22 @@ mButton::mButton(QWidget *parent, QString imgpath, QString imgpresspath) : QWidg
     this->setMaximumSize(img.size());
     this->setParent(parent);
     mp = new QPainter();
+}
+
+void mButton::setId(int id)
+{
+    m_id = id;
+}
+
+int mButton::getId()
+{
+    return m_id;
+}
+
+void mButton::setSelectedStatus(bool status)
+{
+    isSelected = status;
+    update();
 }
 
 void mButton::paintEvent(QPaintEvent *e)

@@ -24,6 +24,7 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QVBoxLayout>
 
 struct triangle;
 class MainWindow;
@@ -64,6 +65,7 @@ public slots:
     void OnFileSave();
     void OnStlSave();
     void togglepanel();
+    void buttonsTogglePanel();
     void viewChange();
     void OnBtnPress();
     void OnBtnRelease();
@@ -205,7 +207,15 @@ private:
     QString string_selectmodel;
     updateThread *mThread;
     supportThread *supThread;
-    mButton *delbutton, *copybutton;
+    mButton *delbutton, *copybutton;            //右上角两个按钮
+    mButton *m_btnOpen, *m_btnSave, *m_btnLanguage, *m_btnView, *m_btnRotate, *m_btnScale, *m_btnPosition, *m_btnSlice;
+    QWidget *m_subLanguage, *m_subView, *m_subRotate, *m_subScale, *m_subPosition;
+    QPushButton *m_btnLanCN, *m_btnLanEN;
+    IconLabel *m_btnViewTop, *m_btnViewFront, *m_btnViewBottom;
+    NumberEdit *m_rotateX, *m_rotateY, *m_rotateZ, *m_scaleX, *m_scaleY, *m_scaleZ;
+    QPushButton *m_rotateReset, *m_scaleReset;
+    QCheckBox *m_keepXYZ;
+    void InitMyOperationButtons();
     QVector3D mousePlatformPos;
     void initIconLabel(IconLabel *&widget, QString url, QString text, int lpos);
     void initPanelData();

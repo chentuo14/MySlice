@@ -8,6 +8,7 @@
 #include <iostream>
 #include <glut.h>
 
+#include <QDebug>
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
 #endif
@@ -274,6 +275,8 @@ M3DViewer::M3DViewer(MainWindow *mparent,QWidget *parent) : QGLWidget(parent)
     connect(copybutton, SIGNAL(buttonClick()), this, SLOT(copyModel()));
 //    copybutton->setGeometry(this->width());
 
+    InitMyOperationButtons();
+
     animfinish = true;
     tm = new QTimer(this);
     connect(tm, SIGNAL(timeout()), this, SLOT(OnAnimFinish()));
@@ -353,6 +356,7 @@ void M3DViewer::togglepanel()
 
     IconLabel *ms = (IconLabel*) sender();
     int panelid = ms->getId();
+    qDebug()<<__FUNCTION__<<selectid;
     if(selectid < 0 && (panelid == 6 || panelid == 4 || panelid == 5))
     {
         showToast(string_selectmodel, 2);
@@ -433,6 +437,65 @@ void M3DViewer::togglepanel()
     rotatemodel->setlight(!rotatepanel->isHidden());
     scaledmodel->setlight(!scaledpanel->isHidden());
     positionmodel->setlight(!positionpanel->isHidden());
+}
+
+void M3DViewer::buttonsTogglePanel()
+{
+    mButton *btn = (mButton *)sender();
+    int btnId = btn->getId();
+    if(selectid <0 && (btnId == 6 || btnId == 4 || btnId == 5)) {
+        showToast(string_selectmodel, 2);
+        btnId = -1;
+    }
+
+    switch(btnId) {
+    case 2:
+        m_subView->hide();
+        m_subRotate->hide();
+        m_subScale->hide();
+//        positionpanel->hide();
+        if(m_subLanguage->isHidden()) {
+            m_subLanguage->show();
+        } else {
+            m_subLanguage->hide();
+        }
+        break;
+    case 3:
+        m_subLanguage->hide();
+        m_subRotate->hide();
+        m_subScale->hide();
+        if(m_subView->isHidden()) {
+            m_subView->show();
+        } else {
+            m_subView->hide();
+        }
+        break;
+    case 4:
+        m_subLanguage->hide();
+        m_subView->hide();
+        m_subScale->hide();
+        if(m_subRotate->isHidden()) {
+            m_subRotate->show();
+        } else {
+            m_subRotate->hide();
+        }
+        break;
+    case 5:
+        m_subLanguage->hide();
+        m_subView->hide();
+        m_subRotate->hide();
+        if(m_subScale->isHidden()) {
+            m_subScale->show();
+        } else {
+            m_subScale->hide();
+        }
+        break;
+    case 6:
+        break;
+    default:
+        break;
+    }
+//    m_btnLanguage->setSelectedStatus(m_subLanguage->isHidden());
 }
 
 void M3DViewer::getScreenShot()
@@ -787,6 +850,13 @@ void M3DViewer::initPanelData()
     px->setNumText(QString::number(mposition.x()));
     py->setNumText(QString::number(mposition.y()));
     pz->setNumText(QString::number(mposition.z()));
+
+    m_rotateX->setNumText(QString::number(mrotation.x()));
+    m_rotateY->setNumText(QString::number(mrotation.y()));
+    m_rotateZ->setNumText(QString::number(mrotation.z()));
+    m_scaleX->setNumText(QString::number(md->getSize().x()));
+    m_scaleY->setNumText(QString::number(md->getSize().y()));
+    m_scaleZ->setNumText(QString::number(md->getSize().z()));
     updatingtext = false;
 }
 
@@ -965,6 +1035,24 @@ void M3DViewer::resizeGL(int width, int height)
      delbutton->setGeometry(width-delbutton->width()-10, 10, delbutton->width(), delbutton->height());
      copybutton->setGeometry(width-copybutton->width()-10, delbutton->pos().y()+delbutton->height()+10
                              , copybutton->width(), copybutton->height());
+     //自加按钮
+     m_btnOpen->setGeometry(180, 10, m_btnOpen->width(), m_btnOpen->height());
+     m_btnSave->setGeometry(180, 60, m_btnSave->width(), m_btnSave->height());
+     m_btnLanguage->setGeometry(180, 110, m_btnLanguage->width(), m_btnLanguage->height());
+     m_subLanguage->setGeometry(m_btnLanguage->pos().x() + m_btnLanguage->width(),
+                                m_btnLanguage->pos().ry(), 170, 80);
+     m_btnView->setGeometry(180, 160, m_btnView->width(), m_btnView->height());
+     m_subView->setGeometry(m_btnView->pos().x() + m_btnView->width(),
+                            m_btnView->pos().ry(), 170, 130);
+     m_btnRotate->setGeometry(180, 210, m_btnRotate->width(), m_btnRotate->height());
+     m_subRotate->setGeometry(m_btnRotate->pos().x() + m_btnRotate->width(),
+                            m_btnRotate->pos().ry(), 170, 146);
+     m_btnScale->setGeometry(180, 260, m_btnScale->width(), m_btnScale->height());
+     m_subScale->setGeometry(m_btnScale->pos().x() + m_btnScale->width(),
+                             m_btnScale->pos().ry(), 170, 162);
+
+     m_btnPosition->setGeometry(180, 310, m_btnPosition->width(), m_btnPosition->height());
+     m_btnSlice->setGeometry(180, 360, m_btnSlice->width(), m_btnSlice->height());
 }
 
 void M3DViewer::resetCamera(bool xraygon)
@@ -1797,6 +1885,195 @@ QVector3D M3DViewer::getPointOnTri(triangle *bottri, int x, int y)
     return localPos;
 }
 
+void M3DViewer::InitMyOperationButtons()
+{
+    /* open */
+    m_btnOpen = new mButton(this, ":/resource/icon/myButtons/folder40px.png", ":/resource/icon/myButtons/folder40px_press.png");
+    m_btnOpen->setId(0);
+    connect(m_btnOpen, SIGNAL(buttonClick()), this, SLOT(OnFileOpen()));
+    /* save */
+    m_btnSave = new mButton(this, ":/resource/icon/myButtons/Save-as40px.png", ":/resource/icon/myButtons/Save-as40px_press.png");
+    m_btnSave->setId(1);
+    connect(m_btnSave, SIGNAL(buttonClick()), this, SLOT(OnStlSave()));
+
+    /* language */
+    m_btnLanguage = new mButton(this, ":/resource/icon/myButtons/Language40px.png", ":/resource/icon/myButtons/Language40px_press.png");
+    m_btnLanguage->setId(2);
+    QVBoxLayout *Lanlayout = new QVBoxLayout();
+    m_subLanguage = new QWidget();
+    m_subLanguage->setStyleSheet("background-color:#12997a;");
+    m_subLanguage->setParent(this);
+    m_subLanguage->hide();
+    m_btnLanCN = new QPushButton();
+    m_btnLanCN->setText(QStringLiteral("中文"));
+    m_btnLanCN->setObjectName(":/resource/language/cn.qm");
+    m_btnLanCN->setStyleSheet("color:#ffffff;font:16px;font-weight:bold;border:0px;");
+    m_btnLanCN->setGeometry(0, 0, 170, 40);
+    m_btnLanCN->setParent(m_subLanguage);
+    connect(m_btnLanCN, SIGNAL(clicked(bool)), this, SLOT(OnLanguageChange()));
+    m_btnLanEN = new QPushButton();
+    m_btnLanEN->setText("English");
+    m_btnLanEN->setObjectName(":/resource/language/en.qm");
+    m_btnLanEN->setStyleSheet("color:#ffffff;font:16px;font-weight:bold;border:0px;");
+    m_btnLanEN->setGeometry(0, 0, 170, 40);
+    m_btnLanEN->setParent(m_subLanguage);
+    connect(m_btnLanEN, SIGNAL(clicked(bool)), this, SLOT(OnLanguageChange()));
+    Lanlayout->addWidget(m_btnLanCN);
+    Lanlayout->addWidget(m_btnLanEN);
+    m_subLanguage->setLayout(Lanlayout);
+    connect(m_btnLanguage, SIGNAL(buttonClick()), this, SLOT(buttonsTogglePanel()));
+    /* view按钮 */
+    m_btnView = new mButton(this, ":/resource/icon/myButtons/view40px.png", ":/resource/icon/myButtons/view40px_press.png");
+    m_btnView->setId(3);
+    connect(m_btnView, SIGNAL(buttonClick()), this, SLOT(buttonsTogglePanel()));
+    /* view选单 */
+    m_subView = new QWidget();
+    m_subView->setStyleSheet("background-color:#12997a;");
+    m_subView->setGeometry(150,selectview->pos().y(),170,130);
+    m_subView->setParent(this);
+    m_subView->hide();
+    QVBoxLayout *viewlayout = new QVBoxLayout();
+    m_subView = new QWidget();
+    m_subView->setStyleSheet("background-color:#12997a;");
+    m_subView->setParent(this);
+    m_subView->hide();
+    m_btnViewTop = new IconLabel();
+    m_btnViewTop->setIcon(":/resource/icon/Top_view.png");
+    m_btnViewTop->setLText(tr("Top"));
+    m_btnViewTop->setlight(true);
+    m_btnViewTop->setId(0);
+    m_btnViewTop->setGeometry(30, 5, 120, 40);
+    m_btnViewTop->setParent(m_subView);
+    connect(m_btnViewTop, SIGNAL(OnClicked()), this, SLOT(viewChange()));
+    m_btnViewFront = new IconLabel();
+    m_btnViewFront->setIcon(":/resource/icon/Front_view.png");
+    m_btnViewFront->setLText(tr("Front"));
+    m_btnViewFront->setlight(true);
+    m_btnViewFront->setId(1);
+    m_btnViewFront->setGeometry(30, 45, 120, 40);
+    m_btnViewFront->setParent(m_subView);
+    connect(m_btnViewFront, SIGNAL(OnClicked()), this, SLOT(viewChange()));
+    m_btnViewBottom = new IconLabel();
+    m_btnViewBottom->setIcon(":/resource/icon/Bottom_view.png");
+    m_btnViewBottom->setLText(tr("Bottom"));
+    m_btnViewBottom->setlight(true);
+    m_btnViewBottom->setId(2);
+    m_btnViewBottom->setGeometry(30, 85, 120, 40);
+    m_btnViewBottom->setParent(m_subView);
+    connect(m_btnViewBottom, SIGNAL(OnClicked()), this, SLOT(viewChange()));
+    viewlayout->addWidget(m_btnViewTop);
+    viewlayout->addWidget(m_btnViewFront);
+    viewlayout->addWidget(m_btnViewBottom);
+    m_subView->setLayout(viewlayout);
+
+    /* rotate */
+    m_btnRotate = new mButton(this, ":/resource/icon/myButtons/Rotate40px.png", ":/resource/icon/myButtons/Rotate40px_press.png");
+    m_btnRotate->setId(4);
+    connect(m_btnRotate, SIGNAL(buttonClick()), this, SLOT(buttonsTogglePanel()));
+    /* rotate选单 */
+    m_subRotate = new QWidget();
+    QVBoxLayout *rotatelayout = new QVBoxLayout();
+    m_subRotate->setStyleSheet("background-color:#12997a;");
+    m_subRotate->setGeometry(150,rotatemodel->pos().y(), 170, 146);
+    m_subRotate->setParent(this);
+    m_subRotate->hide();
+    m_rotateX = new NumberEdit();
+    m_rotateX->needDegreen(true);
+    m_rotateX->setTitle("X:");
+    m_rotateX->setObjectName("x");
+    m_rotateX->setGeometry(24, 10, 128, 22);
+    m_rotateX->setParent(m_subRotate);
+    connect(m_rotateX, SIGNAL(edittextChange(QString)), this, SLOT(OnRotateChange(QString)));
+    m_rotateY = new NumberEdit();
+    m_rotateY->needDegreen(true);
+    m_rotateY->setObjectName("y");
+    m_rotateY->setTitle("Y:");
+    m_rotateY->setGeometry(24, 42, 128, 22);
+    m_rotateY->setParent(m_subRotate);
+    connect(m_rotateY, SIGNAL(edittextChange(QString)), this, SLOT(OnRotateChange(QString)));
+    m_rotateZ = new NumberEdit();
+    m_rotateZ->needDegreen(true);
+    m_rotateZ->setObjectName("z");
+    m_rotateZ->setTitle("Z:");
+    m_rotateZ->setGeometry(24, 74, 128, 22);
+    m_rotateZ->setParent(m_subRotate);
+    connect(m_rotateZ, SIGNAL(edittextChange(QString)), this, SLOT(OnRotateChange(QString)));
+    m_rotateReset = new QPushButton();
+    m_rotateReset->setObjectName("rot");
+    m_rotateReset->setText(tr("reset"));
+    m_rotateReset->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:10px;border:0px;font:18px;font-weight:bold;");
+    m_rotateReset->setGeometry(25, 116, 120, 22);
+    m_rotateReset->setParent(m_subRotate);
+    connect(m_rotateReset, SIGNAL(pressed()), this, SLOT(OnBtnPress()));
+    connect(m_rotateReset, SIGNAL(released()), this, SLOT(OnBtnRelease()));
+    connect(m_rotateReset, SIGNAL(clicked(bool)), this, SLOT(OnResetData()));
+    rotatelayout->addWidget(m_rotateX);
+    rotatelayout->addWidget(m_rotateY);
+    rotatelayout->addWidget(m_rotateZ);
+    rotatelayout->addWidget(m_rotateReset);
+    m_subRotate->setLayout(rotatelayout);
+
+    /* scale */
+    m_btnScale = new mButton(this, ":/resource/icon/myButtons/magnifier40px.png", ":/resource/icon/myButtons/magnifier40px_press.png");
+    m_btnScale->setId(5);
+    connect(m_btnScale, SIGNAL(buttonClick()), this, SLOT(buttonsTogglePanel()));
+    m_subScale = new QWidget();
+    m_subScale->setStyleSheet("background-color:#12997a;");
+
+    m_subScale->setParent(this);
+    m_subScale->hide();
+
+    m_scaleX = new NumberEdit();
+    m_scaleX->setTitle("X(mm):");
+    m_scaleX->setObjectName("x");
+    m_scaleX->setGeometry(5, 10, 165, 22);
+    m_scaleX->setParent(m_subScale);
+    connect(m_scaleX, SIGNAL(edittextChange(QString)), this, SLOT(OnSizeChange(QString)));
+    m_scaleY = new NumberEdit();
+    m_scaleY->setTitle("Y(mm):");
+    m_scaleY->setObjectName("y");
+    m_scaleY->setGeometry(5, 42, 165, 22);
+    m_scaleY->setParent(m_subScale);
+    connect(m_scaleY, SIGNAL(edittextChange(QString)), this, SLOT(OnSizeChange(QString)));
+    m_scaleZ = new NumberEdit();
+    m_scaleZ->setTitle("Z(mm):");
+    m_scaleZ->setObjectName("z");
+    m_scaleZ->setGeometry(5, 74, 165, 22);
+    m_scaleZ->setParent(m_subScale);
+    connect(m_scaleZ, SIGNAL(edittextChange(QString)), this, SLOT(OnSizeChange(QString)));
+    m_keepXYZ = new QCheckBox();
+    m_keepXYZ->setText(tr("aspect ratio"));
+    m_keepXYZ->setStyleSheet("background-color:#12997a;color:#f2f2f2;font:14px;");
+    m_keepXYZ->setGeometry(30, 106, 110, 18);
+    m_keepXYZ->setParent(scaledpanel);
+    m_keepXYZ->setChecked(true);
+    m_scaleReset = new QPushButton();
+    m_scaleReset->setText(tr("reset"));
+    m_scaleReset->setObjectName("size");
+    m_scaleReset->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:10px;border:0px;font:18px;font-weight:bold;");
+    m_scaleReset->setGeometry(25, 134, 120 ,22);
+    m_scaleReset->setParent(scaledpanel);
+    connect(m_scaleReset, SIGNAL(pressed()), this, SLOT(OnBtnPress()));
+    connect(m_scaleReset, SIGNAL(released()), this, SLOT(OnBtnRelease()));
+    connect(m_scaleReset, SIGNAL(clicked(bool)), this, SLOT(OnResetData()));
+    QVBoxLayout *scalelayout = new QVBoxLayout();
+    scalelayout->addWidget(m_scaleX);
+    scalelayout->addWidget(m_scaleY);
+    scalelayout->addWidget(m_scaleZ);
+    scalelayout->addWidget(m_keepXYZ);
+    scalelayout->addWidget(m_scaleReset);
+    m_subScale->setLayout(scalelayout);
+
+    /* position */
+    m_btnPosition = new mButton(this, ":/resource/icon/myButtons/direction40px.png", ":/resource/icon/myButtons/direction40px_press.png");
+    m_btnPosition->setId(6);
+
+    /* slice */
+    m_btnSlice = new mButton(this, ":/resource/icon/myButtons/Knife40px.png", ":/resource/icon/myButtons/Knife40px_press.png");
+    m_btnSlice->setId(7);
+    connect(m_btnSlice, SIGNAL(buttonClick()), this, SLOT(OnFileSave()));
+}
+
 void M3DViewer::rePaintModel()
 {
     const float viewRad = 1.0;
@@ -2610,7 +2887,9 @@ void M3DViewer::drawFloor()
 
 void M3DViewer::OnFileOpen()
 {
+    qDebug()<<__FUNCTION__<<"before togglepanel()";
     togglepanel();
+    qDebug()<<__FUNCTION__<<"before loadscene()";
     mparent->loadscene();
 }
 
@@ -2622,7 +2901,9 @@ void M3DViewer::OnFileSave()
 
 void M3DViewer::OnStlSave()
 {
+    qDebug()<<__FUNCTION__<<"before togglepanel()";
     togglepanel();
+    qDebug()<<__FUNCTION__<<"before loadscene()";
     mparent->savestl();
 }
 

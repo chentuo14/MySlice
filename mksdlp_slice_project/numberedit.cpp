@@ -80,7 +80,7 @@ void NumberEdit::setNumText(QString numtext)
     {
         if(!numtext.contains("°"))
         {
-            numtext += "°";
+            numtext += QStringLiteral("°");
         }
     }
     int cps = md->cursorPosition();

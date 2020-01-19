@@ -27,5 +27,21 @@
         <file>icon/copy_press.png</file>
         <file>icon/del.png</file>
         <file>icon/del_press.png</file>
+        <file>icon/myButtons/folder40px.png</file>
+        <file>icon/myButtons/folder40px_press.png</file>
+        <file>icon/myButtons/Save-as40px.png</file>
+        <file>icon/myButtons/Save-as40px_press.png</file>
+        <file>icon/myButtons/Language40px.png</file>
+        <file>icon/myButtons/Language40px_press.png</file>
+        <file>icon/myButtons/view40px.png</file>
+        <file>icon/myButtons/view40px_press.png</file>
+        <file>icon/myButtons/Rotate40px.png</file>
+        <file>icon/myButtons/Rotate40px_press.png</file>
+        <file>icon/myButtons/magnifier40px.png</file>
+        <file>icon/myButtons/magnifier40px_press.png</file>
+        <file>icon/myButtons/direction40px.png</file>
+        <file>icon/myButtons/direction40px_press.png</file>
+        <file>icon/myButtons/Knife40px.png</file>
+        <file>icon/myButtons/Knife40px_press.png</file>
     </qresource>
 </RCC>
