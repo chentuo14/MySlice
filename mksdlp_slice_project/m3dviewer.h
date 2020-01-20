@@ -88,6 +88,8 @@ public slots:
     void getPlatformPos(QPoint mousePos);
     void autoSupportFinish();
     void autoaddSupport(QVector3D mpos, int id);
+    void SupportTypeChange(int tp);
+    void SupportShapeChange(int sp);
 signals:
     void OnModelSelected(int id);
     void OnTriSelected(int id);
@@ -208,14 +210,28 @@ private:
     updateThread *mThread;
     supportThread *supThread;
     mButton *delbutton, *copybutton;            //右上角两个按钮
-    mButton *m_btnOpen, *m_btnSave, *m_btnLanguage, *m_btnView, *m_btnRotate, *m_btnScale, *m_btnPosition, *m_btnSlice;
-    QWidget *m_subLanguage, *m_subView, *m_subRotate, *m_subScale, *m_subPosition;
+    mButton *m_btnOpen, *m_btnSave, *m_btnLanguage, *m_btnView, *m_btnRotate, *m_btnScale, *m_btnPosition, *m_btnSlice, *m_btnSupport;
+    QWidget *m_subLanguage, *m_subView, *m_subRotate, *m_subScale, *m_subPosition, *m_subSupport;
     QPushButton *m_btnLanCN, *m_btnLanEN;
     IconLabel *m_btnViewTop, *m_btnViewFront, *m_btnViewBottom;
     NumberEdit *m_rotateX, *m_rotateY, *m_rotateZ, *m_scaleX, *m_scaleY, *m_scaleZ, *m_positionX, *m_positionY, *m_positionZ;
-    QPushButton *m_rotateReset, *m_scaleReset, *m_positionReset;
+    QPushButton *m_rotateReset, *m_scaleReset, *m_positionReset, *m_supportSizeS, *m_supportSizeM, *m_supportSizeL,
+        *m_supportRateM, *m_supportRateL, *m_supportRateH, *m_supportAdd, *m_supportDel, *m_supportAuto;
     QCheckBox *m_keepXYZ;
+    QLabel *m_supportTypeName, *m_supportShapeName, *m_supportSizeName, *m_supportDensityName;
+    QComboBox *m_supportType, *m_supportShape;
     void InitMyOperationButtons();
+    void HideLeftMenu();
+    void InitOpenButton();
+    void InitSaveAsButton();
+    void InitLanguageButton();
+    void InitViewButton();
+    void InitRotateButton();
+    void InitScaleButton();
+    void InitPositionButton();
+    void InitSliceButton();
+    void InitSupportButton();
+
     QVector3D mousePlatformPos;
     void initIconLabel(IconLabel *&widget, QString url, QString text, int lpos);
     void initPanelData();

@@ -43,5 +43,7 @@
         <file>icon/myButtons/direction40px_press.png</file>
         <file>icon/myButtons/Knife40px.png</file>
         <file>icon/myButtons/Knife40px_press.png</file>
+        <file>icon/myButtons/support40px.png</file>
+        <file>icon/myButtons/support40px_press.png</file>
     </qresource>
 </RCC>

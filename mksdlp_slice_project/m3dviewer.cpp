@@ -443,7 +443,7 @@ void M3DViewer::buttonsTogglePanel()
 {
     mButton *btn = (mButton *)sender();
     int btnId = btn->getId();
-    if(selectid <0 && (btnId == 6 || btnId == 4 || btnId == 5)) {
+    if(selectid <0 && (btnId == 6 || btnId == 4 || btnId == 5 || btnId == 8)) {
         showToast(string_selectmodel, 2);
         btnId = -1;
     }
@@ -454,7 +454,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subRotate->hide();
         m_subScale->hide();
         m_subPosition->hide();
-//        positionpanel->hide();
+        m_subSupport->hide();
         if(m_subLanguage->isHidden()) {
             m_subLanguage->show();
         } else {
@@ -466,6 +466,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subRotate->hide();
         m_subScale->hide();
         m_subPosition->hide();
+        m_subSupport->hide();
         if(m_subView->isHidden()) {
             m_subView->show();
         } else {
@@ -477,6 +478,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subView->hide();
         m_subScale->hide();
         m_subPosition->hide();
+        m_subSupport->hide();
         if(m_subRotate->isHidden()) {
             m_subRotate->show();
         } else {
@@ -488,6 +490,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subView->hide();
         m_subRotate->hide();
         m_subPosition->hide();
+        m_subSupport->hide();
         if(m_subScale->isHidden()) {
             m_subScale->show();
         } else {
@@ -499,10 +502,23 @@ void M3DViewer::buttonsTogglePanel()
         m_subView->hide();
         m_subRotate->hide();
         m_subScale->hide();
+        m_subSupport->hide();
         if(m_subPosition->isHidden()) {
             m_subPosition->show();
         } else {
             m_subPosition->hide();
+        }
+        break;
+    case 8:
+        m_subLanguage->hide();
+        m_subView->hide();
+        m_subRotate->hide();
+        m_subScale->hide();
+        m_subPosition->hide();
+        if(m_subSupport->isHidden()) {
+            m_subSupport->show();
+        } else {
+            m_subSupport->hide();
         }
         break;
     default:
@@ -511,6 +527,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subRotate->hide();
         m_subScale->hide();
         m_subPosition->hide();
+        m_subSupport->hide();
         break;
     }
 //    m_btnLanguage->setSelectedStatus(m_subLanguage->isHidden());
@@ -1061,7 +1078,10 @@ void M3DViewer::resizeGL(int width, int height)
      m_subPosition->setGeometry(m_btnPosition->pos().x() + m_btnPosition->width(),
                                 m_btnPosition->pos().ry(),170,146);
      m_btnSlice->setGeometry(xStart, yStart+yStep*7, m_btnSlice->width(), m_btnSlice->height());
-}
+     m_btnSupport->setGeometry(xStart, yStart+yStep*8, m_btnSlice->width(), m_btnSlice->height());
+     m_subSupport->setGeometry(m_btnSupport->pos().x() + m_btnSupport->width(),
+                               m_btnSupport->pos().ry()-yStep*2+20,200,300);
+ }
 
 void M3DViewer::resetCamera(bool xraygon)
 {
@@ -1173,6 +1193,50 @@ void M3DViewer::autoaddSupport(QVector3D mpos, int id)
     mr.setZ(180);
     msp.updatelist(smd->getScale(), smd->getOffset(), mr);
     smd->addSupport(msp);
+}
+
+void M3DViewer::SupportTypeChange(int tp)
+{
+    QString stype;
+    switch (tp) {
+    case 0:
+        stype = "free";
+        break;
+    case 1:
+        stype = "face";
+        break;
+    case 2:
+        stype = "point";
+        break;
+    default:
+        stype = "point";
+        break;
+    }
+    QSettings settings("makerbase", "mksdlp");
+    settings.setValue("mksdlp_supporttype", QString::number(tp));
+    setSType(stype);
+}
+
+void M3DViewer::SupportShapeChange(int sp)
+{
+    QString stype;
+    switch (sp) {
+    case 0:
+        stype = "free";
+        break;
+    case 1:
+        stype = "face";
+        break;
+    case 2:
+        stype = "point";
+        break;
+    default:
+        stype = "point";
+        break;
+    }
+    QSettings settings("makerbase", "mksdlp");
+    settings.setValue("mksdlp_supporttype", QString::number(sp));
+    setSType(stype);
 }
 
 void M3DViewer::appendSupport(bool needrotate)
@@ -1895,6 +1959,29 @@ QVector3D M3DViewer::getPointOnTri(triangle *bottri, int x, int y)
 
 void M3DViewer::InitMyOperationButtons()
 {
+    HideLeftMenu();
+
+    InitOpenButton();
+
+    InitSaveAsButton();
+
+    InitLanguageButton();
+
+    InitViewButton();
+
+    InitRotateButton();
+
+    InitScaleButton();
+
+    InitPositionButton();
+
+    InitSliceButton();
+
+    InitSupportButton();
+}
+
+void M3DViewer::HideLeftMenu()
+{
     openfile->hide();
     saveas->hide();
     selectlanguage->hide();
@@ -1916,16 +2003,26 @@ void M3DViewer::InitMyOperationButtons()
     positionpanel->hide();
     languagepanel->hide();
     mmb->hide();
+}
 
+void M3DViewer::InitOpenButton()
+{
     /* open */
     m_btnOpen = new mButton(this, ":/resource/icon/myButtons/folder40px.png", ":/resource/icon/myButtons/folder40px_press.png");
     m_btnOpen->setId(0);
     connect(m_btnOpen, SIGNAL(buttonClick()), this, SLOT(OnFileOpen()));
+}
+
+void M3DViewer::InitSaveAsButton()
+{
     /* save */
     m_btnSave = new mButton(this, ":/resource/icon/myButtons/Save-as40px.png", ":/resource/icon/myButtons/Save-as40px_press.png");
     m_btnSave->setId(1);
     connect(m_btnSave, SIGNAL(buttonClick()), this, SLOT(OnStlSave()));
+}
 
+void M3DViewer::InitLanguageButton()
+{
     /* language */
     m_btnLanguage = new mButton(this, ":/resource/icon/myButtons/Language40px.png", ":/resource/icon/myButtons/Language40px_press.png");
     m_btnLanguage->setId(2);
@@ -1954,6 +2051,10 @@ void M3DViewer::InitMyOperationButtons()
     Lanlayout->addWidget(m_btnLanEN);
     m_subLanguage->setLayout(Lanlayout);
     connect(m_btnLanguage, SIGNAL(buttonClick()), this, SLOT(buttonsTogglePanel()));
+}
+
+void M3DViewer::InitViewButton()
+{
     /* view按钮 */
     m_btnView = new mButton(this, ":/resource/icon/myButtons/view40px.png", ":/resource/icon/myButtons/view40px_press.png");
     m_btnView->setId(3);
@@ -2000,7 +2101,10 @@ void M3DViewer::InitMyOperationButtons()
     viewlayout->addWidget(m_btnViewFront);
     viewlayout->addWidget(m_btnViewBottom);
     m_subView->setLayout(viewlayout);
+}
 
+void M3DViewer::InitRotateButton()
+{
     /* rotate */
     m_btnRotate = new mButton(this, ":/resource/icon/myButtons/Rotate40px.png", ":/resource/icon/myButtons/Rotate40px_press.png");
     m_btnRotate->setId(4);
@@ -2051,7 +2155,10 @@ void M3DViewer::InitMyOperationButtons()
     rotatelayout->addWidget(m_rotateZ);
     rotatelayout->addWidget(m_rotateReset);
     m_subRotate->setLayout(rotatelayout);
+}
 
+void M3DViewer::InitScaleButton()
+{
     /* scale */
     m_btnScale = new mButton(this, ":/resource/icon/myButtons/magnifier40px.png", ":/resource/icon/myButtons/magnifier40px_press.png");
     m_btnScale->setId(5);
@@ -2106,7 +2213,10 @@ void M3DViewer::InitMyOperationButtons()
     scalelayout->addWidget(m_keepXYZ);
     scalelayout->addWidget(m_scaleReset);
     m_subScale->setLayout(scalelayout);
+}
 
+void M3DViewer::InitPositionButton()
+{
     /* position */
     m_btnPosition = new mButton(this, ":/resource/icon/myButtons/direction40px.png", ":/resource/icon/myButtons/direction40px_press.png");
     m_btnPosition->setId(6);
@@ -2148,11 +2258,133 @@ void M3DViewer::InitMyOperationButtons()
     connect(m_positionReset, SIGNAL(released()), this, SLOT(OnBtnRelease()));
     connect(m_positionReset, SIGNAL(clicked(bool)), this, SLOT(OnResetData()));
     connect(m_positionReset, SIGNAL(clicked(bool)), this, SLOT(buttonsTogglePanel()));
+}
 
+void M3DViewer::InitSliceButton()
+{
     /* slice */
     m_btnSlice = new mButton(this, ":/resource/icon/myButtons/Knife40px.png", ":/resource/icon/myButtons/Knife40px_press.png");
     m_btnSlice->setId(7);
     connect(m_btnSlice, SIGNAL(buttonClick()), this, SLOT(OnFileSave()));
+}
+
+void M3DViewer::InitSupportButton()
+{
+    /* support */
+    m_btnSupport = new mButton(this, ":/resource/icon/myButtons/support40px.png", ":/resource/icon/myButtons/support40px_press.png");
+    m_btnSupport->setId(8);
+    connect(m_btnSupport, SIGNAL(buttonClick()), this, SLOT(buttonsTogglePanel()));
+
+    m_subSupport = new QWidget();
+    m_subSupport->setStyleSheet("background-color:#12997a;");
+    m_subSupport->setParent(this);
+    m_subSupport->hide();
+    m_supportTypeName = new QLabel();
+    m_supportTypeName->setText(tr("Support type:"));
+    m_supportTypeName->setStyleSheet("padding-left:6px;margin-top:10px;");
+    m_supportType = new QComboBox();
+    m_supportType->setStyleSheet("QComboBox::drop-down {border:0px;}"
+                                 "QComboBox{background-color:#ffffff;padding:0px;margin-left:2px;margin-top:10px;}"
+                                 "QWidget{background-color:#ffffff;padding:0px;selection-background-color:#126e59;color:#000000;"
+                                 "border:0px;width:94px;height:20px;font:14px;}"
+                                 "QComboBox::down-arrow {image: url(:/resource/icon/drop_down.png);}");
+    m_supportType->addItem(tr("free"));
+    m_supportShapeName = new QLabel();
+    m_supportShapeName->setText(tr("Support density:"));
+    m_supportShapeName->setStyleSheet("padding-left:6px;margin-top:10px;");
+    m_supportShape = new QComboBox();
+    m_supportShape->setStyleSheet("QComboBox::drop-down {border:0px;}"
+                                "QComboBox{background-color:#ffffff;padding:0px;margin-left:2px;margin-top:10px;}"
+                                "QWidget{background-color:#ffffff;padding:0px;selection-background-color:#126e59;color:#000000;"
+                                "border:0px;width:94px;height:20px;font:14px;}"
+                                "QComboBox::down-arrow {image: url(:/resource/icon/drop_down.png);}");
+    m_supportShape->addItem(tr("cylinder"));
+    connect(m_supportType, SIGNAL(currentIndexChanged(int)), this,  SLOT(SupportTypeChange(int)));
+    connect(m_supportShape, SIGNAL(currentIndexChanged(int)), this, SLOT(SupportShapeChange(int)));
+
+    m_supportSizeName = new QLabel();
+    m_supportSizeName->setText(tr("Support Size:"));
+    m_supportSizeName->setStyleSheet("padding-left:6px;margin-top:10px;");
+
+    m_supportSizeS = new QPushButton();
+    m_supportSizeS->setText(tr("S"));
+    m_supportSizeS->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:2px;border:0px;margin-top:10px;"
+                                "margin-left:5px;font:14px;font-weight:bold;width:20px;height:20px;");
+    m_supportSizeS->setObjectName("S");
+    m_supportSizeM = new QPushButton();
+    m_supportSizeM->setText(tr("M"));
+    m_supportSizeM->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:2px;border:0px;margin-top:10px;"
+                                "margin-left:5px;font:14px;font-weight:bold;width:20px;height:20px;");
+    m_supportSizeM->setObjectName("M");
+    m_supportSizeL = new QPushButton();
+    m_supportSizeL->setText(tr("L"));
+    m_supportSizeL->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:2px;border:0px;margin-top:10px;"
+                                "margin-left:5px;font:14px;font-weight:bold;width:20px;height:20px;");
+    m_supportSizeL->setObjectName("L");
+
+    m_supportDensityName = new QLabel();
+    m_supportDensityName->setText(tr("Support density:"));
+    m_supportDensityName->setStyleSheet("padding-left:6px;margin-top:10px;");
+
+    m_supportRateL = new QPushButton();
+    m_supportRateL->setText(tr("L"));
+    m_supportRateL->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:2px;border:0px;margin-top:10px;"
+                                  "margin-left:5px;font:14px;font-weight:bold;width:20px;height:20px;");
+    m_supportRateL->setObjectName("20");
+
+    m_supportRateM = new QPushButton();
+    m_supportRateM->setText(tr("M"));
+    m_supportRateM->setObjectName("30");
+    m_supportRateM->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:2px;border:0px;margin-top:10px;"
+                                  "margin-left:5px;font:14px;font-weight:bold;width:20px;height:20px;");
+
+    m_supportRateH = new QPushButton();
+    m_supportRateH->setText(tr("H"));
+    m_supportRateH->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:2px;border:0px;margin-top:10px;"
+                                "margin-left:5px;font:14px;font-weight:bold;width:20px;height:20px;");
+    m_supportRateH->setObjectName("50");
+
+    m_supportAdd = new QPushButton();
+    m_supportAdd->setText(tr("Add Support"));
+    m_supportAdd->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:10px;border:0px;margin-top:20px;"
+                              "font:18px;font-weight:bold;width:170px;height:22px;");
+    m_supportAdd->setObjectName("add");
+    m_supportDel = new QPushButton();
+    m_supportDel->setText(tr("Del Support"));
+    m_supportDel->setObjectName("del");
+    m_supportDel->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:10px;border:0px;margin-top:10px;"
+                              "font:18px;font-weight:bold;width:170px;height:22px;");
+    m_supportAuto = new QPushButton();
+    m_supportAuto->setText(tr("Auto Support"));
+    m_supportAuto->setObjectName("auto");
+    m_supportAuto->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:10px;border:0px;margin-top:10px;margin-bottom:10px;"
+                               "font:18px;font-weight:bold;width:170px;height:22px;");
+
+    QHBoxLayout *typeLayout = new QHBoxLayout();
+    QHBoxLayout *shapeLayout = new QHBoxLayout();
+    QHBoxLayout *sizeLayout = new QHBoxLayout();
+    QHBoxLayout *densityLayout = new QHBoxLayout();
+    QVBoxLayout *supportLayout = new QVBoxLayout();
+    typeLayout->addWidget(m_supportTypeName);
+    typeLayout->addWidget(m_supportType);
+    shapeLayout->addWidget(m_supportShapeName);
+    shapeLayout->addWidget(m_supportShape);
+    sizeLayout->addWidget(m_supportSizeName);
+    sizeLayout->addWidget(m_supportSizeS);
+    sizeLayout->addWidget(m_supportSizeM);
+    sizeLayout->addWidget(m_supportSizeL);
+    densityLayout->addWidget(m_supportDensityName);
+    densityLayout->addWidget(m_supportRateL);
+    densityLayout->addWidget(m_supportRateM);
+    densityLayout->addWidget(m_supportRateH);
+    supportLayout->addLayout(typeLayout);
+    supportLayout->addLayout(shapeLayout);
+    supportLayout->addLayout(sizeLayout);
+    supportLayout->addLayout(densityLayout);
+    supportLayout->addWidget(m_supportAdd);
+    supportLayout->addWidget(m_supportDel);
+    supportLayout->addWidget(m_supportAuto);
+    m_subSupport->setLayout(supportLayout);
 }
 
 void M3DViewer::rePaintModel()

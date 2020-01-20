@@ -47,6 +47,7 @@ public:
     QString toast_selectmodel, toast_fileerro, toast_mpdtext, toast_printtime, toast_preview, toast_ok,
     dialog_slicing, dialog_cancel, dialog_preview, dialog_dragtext, add_supporting;
     MDialog *pvdialog;
+    NRightPanel* nrightPanel;
 
 public slots:
     void loadscene();
@@ -75,7 +76,6 @@ private:
     Slice *sliceresult;         //存放了切片的参数
     ModelData *smd;
     RightPanel* rightPanel;
-    NRightPanel* nrightPanel;
     QString settingpath;
     std::vector<ModelData*> md_list;
     PreViewDialog* pd;
