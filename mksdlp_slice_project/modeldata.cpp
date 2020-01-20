@@ -319,7 +319,6 @@ void ModelData::CenterModel()
 
 void ModelData::updateOutput()
 {
-    qDebug()<<"updateOutput";
     float max_x = -9999999, max_y = -999999, min_x = 999999, min_y = 999999, max_z = -999999, min_z = 999999;
     QVector3D nrot = rotation;                              //在初始化时为0
     nrot.setZ(nrot.z()+180);

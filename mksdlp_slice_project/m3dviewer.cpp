@@ -453,6 +453,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subView->hide();
         m_subRotate->hide();
         m_subScale->hide();
+        m_subPosition->hide();
 //        positionpanel->hide();
         if(m_subLanguage->isHidden()) {
             m_subLanguage->show();
@@ -464,6 +465,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subLanguage->hide();
         m_subRotate->hide();
         m_subScale->hide();
+        m_subPosition->hide();
         if(m_subView->isHidden()) {
             m_subView->show();
         } else {
@@ -474,6 +476,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subLanguage->hide();
         m_subView->hide();
         m_subScale->hide();
+        m_subPosition->hide();
         if(m_subRotate->isHidden()) {
             m_subRotate->show();
         } else {
@@ -484,6 +487,7 @@ void M3DViewer::buttonsTogglePanel()
         m_subLanguage->hide();
         m_subView->hide();
         m_subRotate->hide();
+        m_subPosition->hide();
         if(m_subScale->isHidden()) {
             m_subScale->show();
         } else {
@@ -491,8 +495,22 @@ void M3DViewer::buttonsTogglePanel()
         }
         break;
     case 6:
+        m_subLanguage->hide();
+        m_subView->hide();
+        m_subRotate->hide();
+        m_subScale->hide();
+        if(m_subPosition->isHidden()) {
+            m_subPosition->show();
+        } else {
+            m_subPosition->hide();
+        }
         break;
     default:
+        m_subLanguage->hide();
+        m_subView->hide();
+        m_subRotate->hide();
+        m_subScale->hide();
+        m_subPosition->hide();
         break;
     }
 //    m_btnLanguage->setSelectedStatus(m_subLanguage->isHidden());
@@ -637,44 +655,26 @@ void M3DViewer::hideWidget()
 {
     if(takeScreenShot)
     {
-        openfile->hide();
-        saveas->hide();
-        selectlanguage->hide();
-        selectview->hide();
-        topview->hide();
-        frontview->hide();
-        bottomview->hide();
-        rotatemodel->hide();
-        rreset->hide();
-        scaledmodel->hide();
-        keepxyz->hide();
-        sreset->hide();
-        positionmodel->hide();
-        preset->hide();
-        slicemodel->hide();
-        viewpanel->hide();
-        rotatepanel->hide();
-        scaledpanel->hide();
-        positionpanel->hide();
-        languagepanel->hide();
-        mmb->hide();
+        m_btnOpen->hide();
+        m_btnSave->hide();
+        m_btnLanguage->hide();
+        m_subLanguage->hide();
+        m_btnView->hide();
+        m_subView->hide();
+        m_btnRotate->hide();
+        m_subRotate->hide();
+        m_btnScale->hide();
+        m_subScale->hide();
+        m_btnPosition->hide();
+        m_subPosition->hide();
     }else{
-        openfile->show();
-        saveas->show();
-        selectlanguage->show();
-        selectview->show();
-        topview->show();
-        frontview->show();
-        bottomview->show();
-        rotatemodel->show();
-        rreset->show();
-        scaledmodel->show();
-        keepxyz->show();
-        sreset->show();
-        positionmodel->show();
-        preset->show();
-        slicemodel->show();
-        mmb->show();
+        m_btnOpen->show();
+        m_btnSave->show();
+        m_btnLanguage->show();
+        m_btnView->show();
+        m_btnRotate->show();
+        m_btnScale->show();
+        m_btnPosition->show();
     }
 }
 
@@ -857,6 +857,9 @@ void M3DViewer::initPanelData()
     m_scaleX->setNumText(QString::number(md->getSize().x()));
     m_scaleY->setNumText(QString::number(md->getSize().y()));
     m_scaleZ->setNumText(QString::number(md->getSize().z()));
+    m_positionX->setNumText(QString::number(mposition.x()));
+    m_positionY->setNumText(QString::number(mposition.y()));
+    m_positionZ->setNumText(QString::number(mposition.z()));
     updatingtext = false;
 }
 
@@ -994,7 +997,7 @@ void M3DViewer::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     drawModelInstance();
     drawFloor();
-    drawGUI();
+//    drawGUI();
     resetCamera(false);
     if(takeScreenShot)
     {
@@ -1036,23 +1039,28 @@ void M3DViewer::resizeGL(int width, int height)
      copybutton->setGeometry(width-copybutton->width()-10, delbutton->pos().y()+delbutton->height()+10
                              , copybutton->width(), copybutton->height());
      //自加按钮
-     m_btnOpen->setGeometry(180, 10, m_btnOpen->width(), m_btnOpen->height());
-     m_btnSave->setGeometry(180, 60, m_btnSave->width(), m_btnSave->height());
-     m_btnLanguage->setGeometry(180, 110, m_btnLanguage->width(), m_btnLanguage->height());
+     int xStart = 20;
+     int yStart = this->height()/20;
+     int yStep = 60;
+     m_btnOpen->setGeometry(xStart, yStart, m_btnOpen->width(), m_btnOpen->height());
+     m_btnSave->setGeometry(xStart, yStart+yStep, m_btnSave->width(), m_btnSave->height());
+     m_btnLanguage->setGeometry(xStart, yStart+yStep*2, m_btnLanguage->width(), m_btnLanguage->height());
      m_subLanguage->setGeometry(m_btnLanguage->pos().x() + m_btnLanguage->width(),
                                 m_btnLanguage->pos().ry(), 170, 80);
-     m_btnView->setGeometry(180, 160, m_btnView->width(), m_btnView->height());
+     m_btnView->setGeometry(xStart, yStart+yStep*3, m_btnView->width(), m_btnView->height());
      m_subView->setGeometry(m_btnView->pos().x() + m_btnView->width(),
                             m_btnView->pos().ry(), 170, 130);
-     m_btnRotate->setGeometry(180, 210, m_btnRotate->width(), m_btnRotate->height());
+     m_btnRotate->setGeometry(xStart, yStart+yStep*4, m_btnRotate->width(), m_btnRotate->height());
      m_subRotate->setGeometry(m_btnRotate->pos().x() + m_btnRotate->width(),
                             m_btnRotate->pos().ry(), 170, 146);
-     m_btnScale->setGeometry(180, 260, m_btnScale->width(), m_btnScale->height());
+     m_btnScale->setGeometry(xStart, yStart+yStep*5, m_btnScale->width(), m_btnScale->height());
      m_subScale->setGeometry(m_btnScale->pos().x() + m_btnScale->width(),
                              m_btnScale->pos().ry(), 170, 162);
 
-     m_btnPosition->setGeometry(180, 310, m_btnPosition->width(), m_btnPosition->height());
-     m_btnSlice->setGeometry(180, 360, m_btnSlice->width(), m_btnSlice->height());
+     m_btnPosition->setGeometry(xStart, yStart+yStep*6, m_btnPosition->width(), m_btnPosition->height());
+     m_subPosition->setGeometry(m_btnPosition->pos().x() + m_btnPosition->width(),
+                                m_btnPosition->pos().ry(),170,146);
+     m_btnSlice->setGeometry(xStart, yStart+yStep*7, m_btnSlice->width(), m_btnSlice->height());
 }
 
 void M3DViewer::resetCamera(bool xraygon)
@@ -1887,6 +1895,28 @@ QVector3D M3DViewer::getPointOnTri(triangle *bottri, int x, int y)
 
 void M3DViewer::InitMyOperationButtons()
 {
+    openfile->hide();
+    saveas->hide();
+    selectlanguage->hide();
+    selectview->hide();
+    topview->hide();
+    frontview->hide();
+    bottomview->hide();
+    rotatemodel->hide();
+    rreset->hide();
+    scaledmodel->hide();
+    keepxyz->hide();
+    sreset->hide();
+    positionmodel->hide();
+    preset->hide();
+    slicemodel->hide();
+    viewpanel->hide();
+    rotatepanel->hide();
+    scaledpanel->hide();
+    positionpanel->hide();
+    languagepanel->hide();
+    mmb->hide();
+
     /* open */
     m_btnOpen = new mButton(this, ":/resource/icon/myButtons/folder40px.png", ":/resource/icon/myButtons/folder40px_press.png");
     m_btnOpen->setId(0);
@@ -1911,6 +1941,7 @@ void M3DViewer::InitMyOperationButtons()
     m_btnLanCN->setGeometry(0, 0, 170, 40);
     m_btnLanCN->setParent(m_subLanguage);
     connect(m_btnLanCN, SIGNAL(clicked(bool)), this, SLOT(OnLanguageChange()));
+    connect(m_btnLanCN, SIGNAL(clicked(bool)), this, SLOT(buttonsTogglePanel()));
     m_btnLanEN = new QPushButton();
     m_btnLanEN->setText("English");
     m_btnLanEN->setObjectName(":/resource/language/en.qm");
@@ -1918,6 +1949,7 @@ void M3DViewer::InitMyOperationButtons()
     m_btnLanEN->setGeometry(0, 0, 170, 40);
     m_btnLanEN->setParent(m_subLanguage);
     connect(m_btnLanEN, SIGNAL(clicked(bool)), this, SLOT(OnLanguageChange()));
+    connect(m_btnLanEN, SIGNAL(clicked(bool)), this, SLOT(buttonsTogglePanel()));
     Lanlayout->addWidget(m_btnLanCN);
     Lanlayout->addWidget(m_btnLanEN);
     m_subLanguage->setLayout(Lanlayout);
@@ -1945,6 +1977,7 @@ void M3DViewer::InitMyOperationButtons()
     m_btnViewTop->setGeometry(30, 5, 120, 40);
     m_btnViewTop->setParent(m_subView);
     connect(m_btnViewTop, SIGNAL(OnClicked()), this, SLOT(viewChange()));
+    connect(m_btnViewTop, SIGNAL(OnClicked()), this, SLOT(buttonsTogglePanel()));
     m_btnViewFront = new IconLabel();
     m_btnViewFront->setIcon(":/resource/icon/Front_view.png");
     m_btnViewFront->setLText(tr("Front"));
@@ -1953,6 +1986,7 @@ void M3DViewer::InitMyOperationButtons()
     m_btnViewFront->setGeometry(30, 45, 120, 40);
     m_btnViewFront->setParent(m_subView);
     connect(m_btnViewFront, SIGNAL(OnClicked()), this, SLOT(viewChange()));
+    connect(m_btnViewFront, SIGNAL(OnClicked()), this, SLOT(buttonsTogglePanel()));
     m_btnViewBottom = new IconLabel();
     m_btnViewBottom->setIcon(":/resource/icon/Bottom_view.png");
     m_btnViewBottom->setLText(tr("Bottom"));
@@ -1961,6 +1995,7 @@ void M3DViewer::InitMyOperationButtons()
     m_btnViewBottom->setGeometry(30, 85, 120, 40);
     m_btnViewBottom->setParent(m_subView);
     connect(m_btnViewBottom, SIGNAL(OnClicked()), this, SLOT(viewChange()));
+    connect(m_btnViewBottom, SIGNAL(OnClicked()), this, SLOT(buttonsTogglePanel()));
     viewlayout->addWidget(m_btnViewTop);
     viewlayout->addWidget(m_btnViewFront);
     viewlayout->addWidget(m_btnViewBottom);
@@ -1984,6 +2019,7 @@ void M3DViewer::InitMyOperationButtons()
     m_rotateX->setGeometry(24, 10, 128, 22);
     m_rotateX->setParent(m_subRotate);
     connect(m_rotateX, SIGNAL(edittextChange(QString)), this, SLOT(OnRotateChange(QString)));
+    connect(m_rotateX, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
     m_rotateY = new NumberEdit();
     m_rotateY->needDegreen(true);
     m_rotateY->setObjectName("y");
@@ -1991,6 +2027,7 @@ void M3DViewer::InitMyOperationButtons()
     m_rotateY->setGeometry(24, 42, 128, 22);
     m_rotateY->setParent(m_subRotate);
     connect(m_rotateY, SIGNAL(edittextChange(QString)), this, SLOT(OnRotateChange(QString)));
+    connect(m_rotateY, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
     m_rotateZ = new NumberEdit();
     m_rotateZ->needDegreen(true);
     m_rotateZ->setObjectName("z");
@@ -1998,6 +2035,7 @@ void M3DViewer::InitMyOperationButtons()
     m_rotateZ->setGeometry(24, 74, 128, 22);
     m_rotateZ->setParent(m_subRotate);
     connect(m_rotateZ, SIGNAL(edittextChange(QString)), this, SLOT(OnRotateChange(QString)));
+    connect(m_rotateZ, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
     m_rotateReset = new QPushButton();
     m_rotateReset->setObjectName("rot");
     m_rotateReset->setText(tr("reset"));
@@ -2007,6 +2045,7 @@ void M3DViewer::InitMyOperationButtons()
     connect(m_rotateReset, SIGNAL(pressed()), this, SLOT(OnBtnPress()));
     connect(m_rotateReset, SIGNAL(released()), this, SLOT(OnBtnRelease()));
     connect(m_rotateReset, SIGNAL(clicked(bool)), this, SLOT(OnResetData()));
+    connect(m_rotateReset, SIGNAL(clicked()), this, SLOT(buttonsTogglePanel()));
     rotatelayout->addWidget(m_rotateX);
     rotatelayout->addWidget(m_rotateY);
     rotatelayout->addWidget(m_rotateZ);
@@ -2029,18 +2068,21 @@ void M3DViewer::InitMyOperationButtons()
     m_scaleX->setGeometry(5, 10, 165, 22);
     m_scaleX->setParent(m_subScale);
     connect(m_scaleX, SIGNAL(edittextChange(QString)), this, SLOT(OnSizeChange(QString)));
+    connect(m_scaleX, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
     m_scaleY = new NumberEdit();
     m_scaleY->setTitle("Y(mm):");
     m_scaleY->setObjectName("y");
     m_scaleY->setGeometry(5, 42, 165, 22);
     m_scaleY->setParent(m_subScale);
     connect(m_scaleY, SIGNAL(edittextChange(QString)), this, SLOT(OnSizeChange(QString)));
+    connect(m_scaleY, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
     m_scaleZ = new NumberEdit();
     m_scaleZ->setTitle("Z(mm):");
     m_scaleZ->setObjectName("z");
     m_scaleZ->setGeometry(5, 74, 165, 22);
     m_scaleZ->setParent(m_subScale);
     connect(m_scaleZ, SIGNAL(edittextChange(QString)), this, SLOT(OnSizeChange(QString)));
+    connect(m_scaleZ, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
     m_keepXYZ = new QCheckBox();
     m_keepXYZ->setText(tr("aspect ratio"));
     m_keepXYZ->setStyleSheet("background-color:#12997a;color:#f2f2f2;font:14px;");
@@ -2056,6 +2098,7 @@ void M3DViewer::InitMyOperationButtons()
     connect(m_scaleReset, SIGNAL(pressed()), this, SLOT(OnBtnPress()));
     connect(m_scaleReset, SIGNAL(released()), this, SLOT(OnBtnRelease()));
     connect(m_scaleReset, SIGNAL(clicked(bool)), this, SLOT(OnResetData()));
+    connect(m_scaleReset, SIGNAL(clicked(bool)), this, SLOT(buttonsTogglePanel()));
     QVBoxLayout *scalelayout = new QVBoxLayout();
     scalelayout->addWidget(m_scaleX);
     scalelayout->addWidget(m_scaleY);
@@ -2067,6 +2110,44 @@ void M3DViewer::InitMyOperationButtons()
     /* position */
     m_btnPosition = new mButton(this, ":/resource/icon/myButtons/direction40px.png", ":/resource/icon/myButtons/direction40px_press.png");
     m_btnPosition->setId(6);
+    connect(m_btnPosition, SIGNAL(buttonClick()), this, SLOT(buttonsTogglePanel()));
+
+    /* position选单 */
+    m_subPosition = new QWidget();
+    m_subPosition->setStyleSheet("background-color:#12997a;");
+    m_subPosition->setParent(this);
+    m_subPosition->hide();
+    m_positionX = new NumberEdit();
+    m_positionX->setTitle("X(mm):");
+    m_positionX->setObjectName("x");
+    m_positionX->setGeometry(5, 10, 165, 22);
+    m_positionX->setParent(m_subPosition);
+    connect(m_positionX, SIGNAL(edittextChange(QString)), this, SLOT(OnPositionChange(QString)));
+    connect(m_positionX, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
+    m_positionY = new NumberEdit();
+    m_positionY->setTitle("Y(mm):");
+    m_positionY->setObjectName("y");
+    m_positionY->setGeometry(5, 42, 165, 22);
+    m_positionY->setParent(m_subPosition);
+    connect(m_positionY, SIGNAL(edittextChange(QString)), this, SLOT(OnPositionChange(QString)));
+    connect(m_positionY, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
+    m_positionZ = new NumberEdit();
+    m_positionZ->setTitle("Z(mm):");
+    m_positionZ->setObjectName("z");
+    m_positionZ->setGeometry(5, 74, 165, 22);
+    m_positionZ->setParent(m_subPosition);
+    connect(m_positionZ, SIGNAL(edittextChange(QString)), this, SLOT(OnPositionChange(QString)));
+    connect(m_positionZ, SIGNAL(edittextChange(QString)), this, SLOT(buttonsTogglePanel()));
+    m_positionReset = new QPushButton();
+    m_positionReset->setText(tr("reset"));
+    m_positionReset->setObjectName("pos");
+    m_positionReset->setStyleSheet("background-color:#ffffff;color:#0f8764;border-radius:10px;border:0px;font:18px;font-weight:bold;");
+    m_positionReset->setGeometry(25, 116, 120, 22);
+    m_positionReset->setParent(m_subPosition);
+    connect(m_positionReset, SIGNAL(pressed()), this, SLOT(OnBtnPress()));
+    connect(m_positionReset, SIGNAL(released()), this, SLOT(OnBtnRelease()));
+    connect(m_positionReset, SIGNAL(clicked(bool)), this, SLOT(OnResetData()));
+    connect(m_positionReset, SIGNAL(clicked(bool)), this, SLOT(buttonsTogglePanel()));
 
     /* slice */
     m_btnSlice = new mButton(this, ":/resource/icon/myButtons/Knife40px.png", ":/resource/icon/myButtons/Knife40px_press.png");
@@ -2887,23 +2968,26 @@ void M3DViewer::drawFloor()
 
 void M3DViewer::OnFileOpen()
 {
-    qDebug()<<__FUNCTION__<<"before togglepanel()";
-    togglepanel();
-    qDebug()<<__FUNCTION__<<"before loadscene()";
+//    qDebug()<<__FUNCTION__<<"before togglepanel()";
+//    togglepanel();
+//    qDebug()<<__FUNCTION__<<"before loadscene()";
+    buttonsTogglePanel();
     mparent->loadscene();
 }
 
 void M3DViewer::OnFileSave()
 {
-    togglepanel();
+//    togglepanel();
+    buttonsTogglePanel();
     mparent->savedlp();
 }
 
 void M3DViewer::OnStlSave()
 {
-    qDebug()<<__FUNCTION__<<"before togglepanel()";
-    togglepanel();
-    qDebug()<<__FUNCTION__<<"before loadscene()";
+//    qDebug()<<__FUNCTION__<<"before togglepanel()";
+//    togglepanel();
+//    qDebug()<<__FUNCTION__<<"before loadscene()";
+    buttonsTogglePanel();
     mparent->savestl();
 }
 

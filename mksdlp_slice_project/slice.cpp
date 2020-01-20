@@ -645,17 +645,14 @@ void Slice::setFilename(QString filename)
     pf->open(QIODevice::WriteOnly);
     QDataStream out(pf);
     out << "MKSDLP" ;                                           //文件MKSDLP开头
-    qDebug()<<"[setFilename]:!isSaveZip:"<<!isSaveZip;
     if(!isSaveZip)
     {
-        qDebug()<<"[setFilename] before OutputScreenShot";
         mparent->OutputScreenShot(out);
     }else{
         int r, g, b, rgb, width, height;
         QImage hendimg = zippreview.scaled(116, 116, Qt::KeepAspectRatio);
         width = hendimg.width();
         height = hendimg.height();
-        qDebug()<<"[setFilename]width:"<<width<<"height:"<<height;
         for(int h = 0; h < height; h++)
         {
             for(int w = 0; w < width; w++)
@@ -685,7 +682,6 @@ void Slice::setFilename(QString filename)
         }
         out << (quint8)0x0D << (quint8)0x0A;
     }
-    qDebug()<<"[setFilename] after OutputScreenShot";
     out << (quint16)max_size << (quint16)resolution.x() << (quint16)resolution.y();
     out << QString::number(platform.x())
         << QString::number(platform.y())

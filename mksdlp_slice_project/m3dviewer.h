@@ -212,8 +212,8 @@ private:
     QWidget *m_subLanguage, *m_subView, *m_subRotate, *m_subScale, *m_subPosition;
     QPushButton *m_btnLanCN, *m_btnLanEN;
     IconLabel *m_btnViewTop, *m_btnViewFront, *m_btnViewBottom;
-    NumberEdit *m_rotateX, *m_rotateY, *m_rotateZ, *m_scaleX, *m_scaleY, *m_scaleZ;
-    QPushButton *m_rotateReset, *m_scaleReset;
+    NumberEdit *m_rotateX, *m_rotateY, *m_rotateZ, *m_scaleX, *m_scaleY, *m_scaleZ, *m_positionX, *m_positionY, *m_positionZ;
+    QPushButton *m_rotateReset, *m_scaleReset, *m_positionReset;
     QCheckBox *m_keepXYZ;
     void InitMyOperationButtons();
     QVector3D mousePlatformPos;

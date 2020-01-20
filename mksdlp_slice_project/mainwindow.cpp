@@ -28,8 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     statusBar()->hide();
     this->setWindowTitle("MKS DHOST");
     ui->mainToolBar->hide();
-    mview = new M3DViewer(this, NULL);
-    nrightPanel = new NRightPanel(this, NULL);
+    mview = new M3DViewer(this, nullptr);
+    nrightPanel = new NRightPanel(this, nullptr);
     ui->ViewWindow->setMargin(0);
     ui->ViewWindow->setSpacing(0);
 //    rightPanel = new RightPanel(this, NULL);
@@ -277,7 +277,6 @@ void MainWindow::savedlp()
     ModelData* md;
     int max_size = 0;
     int max_result = 0;
-    qDebug()<<"md_list.size:"<<md_list.size();
 
     for(int i = 0; i < md_list.size(); i++) {
         md = md_list[i];                                    //一层的面

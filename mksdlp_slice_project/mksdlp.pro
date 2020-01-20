@@ -87,15 +87,15 @@ RESOURCES += \
 LIBS += -lglut32
 
 #zlib
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/zlib-result-x64/ -lzlibstat
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/zlib-result-x64/ -lzlibstatd
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/'../lib&include/zlib-result-x64/' -lzlibstat
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/'../lib&include/zlib-result-x64/' -lzlibstatd
 
-INCLUDEPATH += $$PWD/../../../../../../MyDirectory/test2/zlib-result-x64
-DEPENDPATH += $$PWD/../../../../../../MyDirectory/test2/zlib-result-x64
+INCLUDEPATH += $$PWD/'../lib&include/zlib-result-x64'
+DEPENDPATH += $$PWD/'../lib&include/zlib-result-x64'
 
 #quzaip
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/quzip-result-x64/ -lquazip
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../MyDirectory/test2/quzip-result-x64/ -lquazipd
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/'../lib&include/quzip-result-x64/' -lquazip
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/'../lib&include/quzip-result-x64/' -lquazipd
 
-INCLUDEPATH += $$PWD/../../../../../../MyDirectory/test2/quzip-result-x64
-DEPENDPATH += $$PWD/../../../../../../MyDirectory/test2/quzip-result-x64
+INCLUDEPATH += $$PWD/'../lib&include/quzip-result-x64'
+DEPENDPATH += $$PWD/'../lib&include/quzip-result-x64'
